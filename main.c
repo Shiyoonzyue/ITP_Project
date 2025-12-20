@@ -4,10 +4,12 @@ void mainMenu(void);
 void login(void);
 void registerPage(void);
 
-void mainMenu(void){
+void mainMenu(void)
+{
 	int status = 1;
 
-	do {
+	do
+	{
 		int choice;
 		printf("\n---------------------------------\n");
 		printf("Welcome to Room Allocation System");
@@ -18,39 +20,46 @@ void mainMenu(void){
 		printf("2. Register\n");
 		printf("3. Exit\n");
 		printf("Enter your choice: ");
-		if(scanf("%d", &choice) != 1) {
+		if (scanf("%d", &choice) != 1)
+		{
 			printf("Invalid input. Please enter a number.\n");
-			while(getchar() != '\n');
+			while (getchar() != '\n')
+				;
 			continue;
 		}
 
-		switch(choice){
-			case 1:
-				login();
-				break;
-			case 2:
-				registerPage();
-				break;
-			case 3:
-				status = 0;
-				break;
-			default:
-				printf("\nInvalid choice, try again");
-				break;
+		switch (choice)
+		{
+		case 1:
+			login();
+			break;
+		case 2:
+			registerPage();
+			break;
+		case 3:
+			status = 0;
+			break;
+		default:
+			printf("\nInvalid choice, try again");
+			break;
 		}
 	} while (status == 1);
-    
 }
 
-void login(void){
-    printf("\nLogin Page");
+void login(void)
+{
+	printf("\nLogin Page");
 }
 
-void registerPage(void){
-    printf("\nRegister Page");
+void registerPage(void)
+{
+	printf("\nRegister Page");
 }
 
-int main(void){	
-    mainMenu();
-    return 0;
+int main(void)
+{
+	mainMenu();
+	return 0;
 }
+
+// try comments for github
