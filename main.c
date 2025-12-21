@@ -4,7 +4,7 @@
 
 typedef struct 
 {
-	char studentID[20]; // Harry Comel
+	int studentID[20]; // Harry Comel
 	char password[20];
 	char name[50];
 	int level;
@@ -62,9 +62,6 @@ void login(void)
 {
 	printf("\nLogin Page\n");
 	printf("Enter Student ID: ");
-
-	
-
 }
 
 void registerPage(void)
