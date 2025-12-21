@@ -4,7 +4,7 @@
 
 typedef struct 
 {
-	char studentID[20];
+	char studentID[20]; // Harry Comel
 	char password[20];
 	char name[50];
 	int level;
