@@ -1,8 +1,20 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct 
+{
+	char studentID[20];
+	char password[20];
+	char name[50];
+	int level;
+} Student;
 
 void mainMenu(void);
 void login(void);
 void registerPage(void);
+
+
 
 void mainMenu(void)
 {
@@ -48,7 +60,11 @@ void mainMenu(void)
 
 void login(void)
 {
-	printf("\nLogin Page");
+	printf("\nLogin Page\n");
+	printf("Enter Student ID: ");
+
+	
+
 }
 
 void registerPage(void)
