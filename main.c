@@ -2,23 +2,37 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+/*struct for some information student, room and maintainence*/
+
+typedef struct
+{
+	int roomNo;
+	char type[10];
+	int maxOccupants;
+	int currentOccupants;
+} Room;
+
 typedef struct 
 {
-	int studentID[20]; // Harry Comel
-	char password[20];
+	int studentID[20];
 	char name[50];
 	int level;
 } Student;
 
-void mainMenu(void);
-void login(void);
-void registerPage(void);
-
-
-
-void mainMenu(void)
+typedef struct 
 {
-	int status = 1;
+	int roomNo;
+	char issueDescription[100];
+	char status[20];
+	char severity[20];
+} MaintenanceRequest;
+
+
+
+int main(void)
+{
+	int loopStatus = 1;
 
 	do
 	{
@@ -27,52 +41,78 @@ void mainMenu(void)
 		printf("Welcome to Room Allocation System");
 		printf("\n---------------------------------\n\n\n");
 
-		printf("Please Login Or Register\n");
-		printf("1. Login\n");
-		printf("2. Register\n");
-		printf("3. Exit\n");
+		printf("Dashboard\n");
+		printf("1. Add Student\n");
+		printf("2. Add Maintenance Request\n");
+		printf("3. Generate Report\n");
+		printf("4. Exit\n");
 		printf("Enter your choice: ");
 		if (scanf("%d", &choice) != 1)
 		{
 			printf("Invalid input. Please enter a number.\n");
-			while (getchar() != '\n')
-				;
+			while (getchar() != '\n');
 			continue;
 		}
 
 		switch (choice)
 		{
 		case 1:
-			login();
+			addStudent();
 			break;
 		case 2:
-			registerPage();
+			addMaintenanceRequest();
 			break;
 		case 3:
-			status = 0;
+			generateReport();
+			break;
+		case 4:
+			printf("Exiting the program. Goodbye!\n");
+			loopStatus = 0;
 			break;
 		default:
 			printf("\nInvalid choice, try again");
 			break;
 		}
-	} while (status == 1);
-}
+	} while (loopStatus == 1);
 
-void login(void)
-{
-	printf("\nLogin Page\n");
-	printf("Enter Student ID: ");
-}
-
-void registerPage(void)
-{
-	printf("\nRegister Page");
-}
-
-int main(void)
-{
-	mainMenu();
 	return 0;
 }
 
-// try comments for github
+/* Functions for managing students, rooms, and maintenance requests would go here */
+
+void addStudent()
+{
+	printf("Add Student Page\n");
+}
+
+void addMaintenanceRequest()
+{
+	printf("Add Maintenance Request Page\n");
+}
+
+void generateReport()
+{
+	printf("Generate Report Page\n");
+}
+
+/* Small Operational Functions */
+
+double calculateFee()
+{
+
+}
+
+void assignRoom()
+{
+
+}
+
+double calculatePenalty()
+{
+
+}
+
+void generateReport()
+{
+
+}
