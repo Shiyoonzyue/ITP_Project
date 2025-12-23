@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_STUDENTS 100
 
 /*struct for some information student, room and maintainence*/
 
@@ -15,7 +16,7 @@ typedef struct
 
 typedef struct 
 {
-	int studentID[20];
+	int studentID;
 	char name[50];
 	int level;
 } Student;
@@ -28,6 +29,17 @@ typedef struct
 	char severity[20];
 } MaintenanceRequest;
 
+
+Student students[MAX_STUDENTS];
+
+int studentCount = 0;
+
+void addStudent(void);
+void addMaintenanceRequest(void);
+void generateReport(void);
+double calculateFee(void);
+void assignRoom(void);
+double calculatePenalty(void);
 
 
 int main(void)
@@ -82,7 +94,38 @@ int main(void)
 
 void addStudent()
 {
-	printf("Add Student Page\n");
+	if (studentCount >= MAX_STUDENTS)
+	{
+		printf("Cannot add more students. Maximum limit reached.\n");
+		return;
+	}
+
+	// Input student details
+	Student *newStudent = &students[studentCount];
+
+	while (getchar() != '\n'); // Clear input buffer
+
+	printf("Enter Student Name: ");
+	fgets(newStudent->name, sizeof(newStudent->name), stdin);
+	newStudent->name[strcspn(newStudent->name, "\n")] = '\0';
+
+	printf("Enter Student Level (1/2/3/4): ");
+	if(scanf("%d", &newStudent->level) != 1 || newStudent->level < 1 || newStudent->level > 4)
+	{
+		printf("Invalid input for student level.\n");
+		while (getchar() != '\n');
+		return;
+	}
+	
+	newStudent->studentID = studentCount + 1;
+	studentCount++;
+	/* for room allocation and calculate fee and payment status tracking*/
+
+	
+
+	/*--------------------------------------------------------------------*/
+
+	printf("Student added successfully with ID: %d\n", newStudent->studentID);
 }
 
 void addMaintenanceRequest()
@@ -99,7 +142,7 @@ void generateReport()
 
 double calculateFee()
 {
-
+	return 0.0;
 }
 
 void assignRoom()
@@ -109,10 +152,5 @@ void assignRoom()
 
 double calculatePenalty()
 {
-
-}
-
-void generateReport()
-{
-
+	return 0.0;
 }
