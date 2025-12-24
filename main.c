@@ -9,8 +9,8 @@
 typedef struct
 {
 	int roomNo;
-	char type[10];
-	int maxOccupants;
+	char type[10];  //Single, Double, Quad
+	int maxOccupants; //1, 2, 4
 	int currentOccupants;
 } Room;
 
@@ -19,6 +19,7 @@ typedef struct
 	int studentID;
 	char name[50];
 	int level;
+	int roomNo;
 } Student;
 
 typedef struct 
@@ -31,33 +32,58 @@ typedef struct
 
 
 Student students[MAX_STUDENTS];
+Room rooms[6] = 
+{
+	{101, "Single", 1, 1,},
+	{102, "Single", 1, 1},
+	{201, "Double", 2, 1},
+	{202, "Double", 2, 0},
+	{301, "Quad", 4, 1},
+	{302, "Quad", 4, 1}
+};
 
-int studentCount = 0;
+int totalStudents = 0;
 
 void addStudent(void);
 void addMaintenanceRequest(void);
 void generateReport(void);
+void studentList(void);
 double calculateFee(void);
 void assignRoom(void);
 double calculatePenalty(void);
+int findRoomIndex(int roomNo);
 
 
 int main(void)
 {
 	int loopStatus = 1;
+	
+	Student s1 = {1001, "Ridhwan", 1, 101};
+	Student s2 = {1002, "Yazid", 3, 102};
+	Student s3 = {1003, "Harry", 4, 201};
+	Student s4 = {1004, "Syamim", 2, 302};
+	Student s5 = {1005, "Nadzrul", 2, 301};
+	
+	students[totalStudents++] = s1;
+	students[totalStudents++] = s2;
+	students[totalStudents++] = s3;
+	students[totalStudents++] = s4;
+	students[totalStudents++] = s5;
+
+	printf("\n\n\n---------------------------------\n");
+	printf("Welcome to Room Allocation System");
+	printf("\n---------------------------------\n");
 
 	do
 	{
 		int choice;
-		printf("\n---------------------------------\n");
-		printf("Welcome to Room Allocation System");
-		printf("\n---------------------------------\n\n\n");
 
-		printf("Dashboard\n");
+		printf("\n\n\nDashboard\n");
 		printf("1. Add Student\n");
 		printf("2. Add Maintenance Request\n");
 		printf("3. Generate Report\n");
-		printf("4. Exit\n");
+		printf("4. Student List\n");
+		printf("5. Exit\n");
 		printf("Enter your choice: ");
 		if (scanf("%d", &choice) != 1)
 		{
@@ -78,6 +104,9 @@ int main(void)
 			generateReport();
 			break;
 		case 4:
+			studentList();
+			break;
+		case 5:
 			printf("Exiting the program. Goodbye!\n");
 			loopStatus = 0;
 			break;
@@ -92,16 +121,16 @@ int main(void)
 
 /* Functions for managing students, rooms, and maintenance requests would go here */
 
-void addStudent()
+void addStudent(void)
 {
-	if (studentCount >= MAX_STUDENTS)
+	if (totalStudents >= MAX_STUDENTS)
 	{
 		printf("Cannot add more students. Maximum limit reached.\n");
 		return;
 	}
 
 	// Input student details
-	Student *newStudent = &students[studentCount];
+	Student *newStudent = &students[totalStudents];
 
 	while (getchar() != '\n'); // Clear input buffer
 
@@ -116,16 +145,46 @@ void addStudent()
 		while (getchar() != '\n');
 		return;
 	}
-	
-	newStudent->studentID = studentCount + 1;
-	studentCount++;
+
+	assignRoom();
 	/* for room allocation and calculate fee and payment status tracking*/
-
 	
-
+	
+	
 	/*--------------------------------------------------------------------*/
-
+	
+	newStudent->studentID = 1000 + totalStudents + 1;
+	totalStudents++;
 	printf("Student added successfully with ID: %d\n", newStudent->studentID);
+}
+
+void studentList(void)
+{
+	int i;
+	printf("\n\nStudent List Page\n");
+	printf("------------------------------------------------------------\n");
+	printf("%-6s %-15s %-8s %-10s %-10s\n","ID", "Name", "Level", "Room No", "Room Type");
+	printf("------------------------------------------------------------\n");
+
+	for(i = 0; i < totalStudents; i++)
+	{
+		int roomIndex = findRoomIndex(students[i].roomNo);
+
+		printf("%-6d %-15s %-8d %-10d ",
+			students[i].studentID, 
+			students[i].name, 
+			students[i].level, 
+			students[i].roomNo);
+
+		if (roomIndex != -1)
+		{
+			printf("%-10s\n", rooms[roomIndex].type);
+		}
+		else
+		{
+			printf("%-10s\n", "Not Assigned");
+		}
+	}
 }
 
 void addMaintenanceRequest()
@@ -147,10 +206,73 @@ double calculateFee()
 
 void assignRoom()
 {
+	int studentIndex = totalStudents;
+	int assigned = 0;
+	printf("Please assign a room to the student.\n");
+
+	//Display the available rooms based on type
+	while(!assigned){
+		char roomType[10];
+		printf("Enter Room Type (Single/Double/Quad): ");
+		scanf("%s", roomType);
+
+		printf("Available Rooms of type %s:\n", roomType);
+		int found = 0;
+		for(int i = 0; i < 6; i++){
+			if(strcmp(rooms[i].type, roomType) == 0 && rooms[i].currentOccupants < rooms[i].maxOccupants){
+				printf("Room No: %d, Current Occupants: %d/%d\n", rooms[i].roomNo, rooms[i].currentOccupants, rooms[i].maxOccupants);
+				found = 1;
+			}
+		}
+		
+		if (!found){
+			printf("No available rooms of type %s. Please choose another type.\n", roomType);
+			continue;
+		}
+
+		//Prompt user to assign a room for student
+		int chosenRoomNo;
+		printf("Enter Room No to assign: ");
+		if(scanf("%d", &chosenRoomNo) != 1){
+			printf("Invalid input for room number.\n");
+			while (getchar() != '\n');
+			continue;
+		}
+
+		//Validate the chosen room
+		int roomIndex = findRoomIndex(chosenRoomNo);
+		if(roomIndex == -1 || strcmp(rooms[roomIndex].type, roomType) != 0 || rooms[roomIndex].currentOccupants >= rooms[roomIndex].maxOccupants)
+		{
+			printf("Room %d is not valid or full. Please try again.\n");
+			continue;
+		}
+
+		students[studentIndex].roomNo = chosenRoomNo;
+		rooms[roomIndex].currentOccupants++;
+		assigned = 1;
+		printf("Room %d assigned to student %s successfully.\n", chosenRoomNo, students[studentIndex].name);
+	}
 
 }
 
 double calculatePenalty()
 {
 	return 0.0;
+}
+
+int findRoomIndex(int roomNo)
+{
+	for (int i = 0; i < 6; i++)
+	{
+		if (rooms[i].roomNo == roomNo)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+int isRoomAvailable(Room *r)
+{
+	return r ->currentOccupants < r ->maxOccupants;
 }
