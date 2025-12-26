@@ -23,6 +23,8 @@ typedef struct
 	char name[50];
 	int level;
 	int roomNo;
+	double montlyFees;
+	int paymentStatus;
 } Student;
 
 // structure for maintanance request
@@ -51,6 +53,7 @@ Room rooms[6] =
 
 int totalStudents = 0;
 
+// funtion prototype here
 void addStudent(void);
 void addMaintenanceRequest(void);
 void generateReport(void);
@@ -59,6 +62,10 @@ double calculateFee(void);
 void assignRoom(void);
 double calculatePenalty(void);
 int findRoomIndex(int roomNo);
+
+// function for file
+void saveStudentsToFile(void);
+void loadStudentsFromFile(void);
 
 int main(void)
 {
@@ -114,6 +121,7 @@ int main(void)
 			studentList();
 			break;
 		case 5:
+			saveStudentsToFile();
 			printf("Exiting the program. Goodbye!\n");
 			loopStatus = 0;
 			break;
@@ -290,4 +298,29 @@ int findRoomIndex(int roomNo)
 int isRoomAvailable(Room *r)
 {
 	return r->currentOccupants < r->maxOccupants;
+}
+
+// file funtion definition (save file)
+void saveStudentToFile(void)
+{
+	FILE *fp = fopen("students.txt", "w");
+
+	if (fp == NULL)
+	{
+		printf("ERROR OPENING STUDENTS.TXT\n");
+		return;
+	}
+
+	for (int i = 0; i < totalStudents; i++)
+	{
+		fprintf(fp, "%d | %s | %d | %.2f | %d \n",
+				students[i].studentID,
+				students[i].name,
+				students[i].roomNo,
+				students[i].montlyFees,
+				students[i].paymentStatus);
+	}
+
+	fclose(fp);
+	printf("STUDENT DATA SAVED SUCCESSFULLY\n");
 }
