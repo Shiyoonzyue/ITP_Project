@@ -23,8 +23,8 @@ typedef struct
 	char name[50];
 	int level;
 	int roomNo;
-	double montlyFees;
-	int paymentStatus;
+	double montlyFees; // NEW
+	int paymentStatus; // NEW
 } Student;
 
 // structure for maintanance request
@@ -69,6 +69,7 @@ void loadStudentsFromFile(void);
 
 int main(void)
 {
+	loadStudentsFromFile(); // load the saved file
 	int loopStatus = 1;
 
 	Student s1 = {1001, "Ridhwan", 1, 101};
@@ -303,16 +304,19 @@ int isRoomAvailable(Room *r)
 // file funtion definition (save file)
 void saveStudentToFile(void)
 {
-	FILE *fp = fopen("students.txt", "w");
+	FILE *fp = fopen("students.txt", "w"); // set pointer called fp then make a file name students.txt
 
+	// condition for error
 	if (fp == NULL)
 	{
 		printf("ERROR OPENING STUDENTS.TXT\n");
 		return;
 	}
 
+	// the for loop is important to goes through every students data start from the first student[0], until the last student
 	for (int i = 0; i < totalStudents; i++)
 	{
+		// format in table
 		fprintf(fp, "%d | %s | %d | %.2f | %d \n",
 				students[i].studentID,
 				students[i].name,
@@ -321,6 +325,7 @@ void saveStudentToFile(void)
 				students[i].paymentStatus);
 	}
 
+	// close the file and send succes message
 	fclose(fp);
 	printf("STUDENT DATA SAVED SUCCESSFULLY\n");
 }
