@@ -317,12 +317,12 @@ void saveStudentsToFile(void)
 	for (int i = 0; i < totalStudents; i++)
 	{
 		// format in table
-		fprintf(fp, "%d | %s | %d | %.2f | %d \n",
+		fprintf(fp, "%d | %s | %d | %.2f | %s \n",
 				students[i].studentID,
 				students[i].name,
 				students[i].roomNo,
 				students[i].montlyFees,
-				students[i].paymentStatus);
+				students[i].paymentStatus == 1 ? "Paid" : "Unpaid");
 	}
 
 	// close the file and send succes message
@@ -342,7 +342,7 @@ void loadStudentsFromFile(void)
 
 	totalStudents == 0;
 
-	while (fscanf(fp, "%d | %49[^|] | %d | %d |%lf | %d \n",
+	while (fscanf(fp, "%d | %49[^|] | %d | %d |%lf | %s \n",
 				  &students[totalStudents].studentID,
 				  &students[totalStudents].name,
 				  &students[totalStudents].level,
