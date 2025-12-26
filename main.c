@@ -302,7 +302,7 @@ int isRoomAvailable(Room *r)
 }
 
 // file funtion definition (save file)
-void saveStudentToFile(void)
+void saveStudentsToFile(void)
 {
 	FILE *fp = fopen("students.txt", "w"); // set pointer called fp then make a file name students.txt
 
@@ -328,4 +328,30 @@ void saveStudentToFile(void)
 	// close the file and send succes message
 	fclose(fp);
 	printf("STUDENT DATA SAVED SUCCESSFULLY\n");
+}
+
+// file function definition (load file)
+void loadStudentsFromFile(void)
+{
+	FILE *fp = fopen("students.txt", "r");
+
+	if (fp == NULL)
+	{
+		return;
+	}
+
+	totalStudents == 0;
+
+	while (fcanf(fp, "%d | %49[^|] | %d | %d |%lf | %d \n",
+				 &students[totalStudents].studentID,
+				 &students[totalStudents].name,
+				 &students[totalStudents].level,
+				 &students[totalStudents].roomNo,
+				 &students[totalStudents].montlyFees,
+				 &students[totalStudents].paymentStatus) == 6)
+	{
+		totalStudents++;
+	}
+
+	fclose(fp);
 }
