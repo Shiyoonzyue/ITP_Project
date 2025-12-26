@@ -147,8 +147,10 @@ void addStudent(void)
 	}
 
 	assignRoom();
-	/* for room allocation and calculate fee and payment status tracking*/
-	
+	/*--------------------------------------------------------------------*/
+	/* for calculate fee and payment status tracking*/
+	//use calculateFee() function here
+	//use calculatePenalty() function here
 	
 	
 	/*--------------------------------------------------------------------*/
@@ -195,13 +197,6 @@ void addMaintenanceRequest()
 void generateReport()
 {
 	printf("Generate Report Page\n");
-}
-
-/* Small Operational Functions */
-
-double calculateFee()
-{
-	return 0.0;
 }
 
 void assignRoom()
@@ -254,6 +249,15 @@ void assignRoom()
 	}
 
 }
+
+
+/* Small Operational Functions */
+
+double calculateFee()
+{
+	return 0.0;
+}
+
 
 double calculatePenalty()
 {
