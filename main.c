@@ -342,13 +342,13 @@ void loadStudentsFromFile(void)
 
 	totalStudents == 0;
 
-	while (fcanf(fp, "%d | %49[^|] | %d | %d |%lf | %d \n",
-				 &students[totalStudents].studentID,
-				 &students[totalStudents].name,
-				 &students[totalStudents].level,
-				 &students[totalStudents].roomNo,
-				 &students[totalStudents].montlyFees,
-				 &students[totalStudents].paymentStatus) == 6)
+	while (fscanf(fp, "%d | %49[^|] | %d | %d |%lf | %d \n",
+				  &students[totalStudents].studentID,
+				  &students[totalStudents].name,
+				  &students[totalStudents].level,
+				  &students[totalStudents].roomNo,
+				  &students[totalStudents].montlyFees,
+				  &students[totalStudents].paymentStatus) == 6)
 	{
 		totalStudents++;
 	}
