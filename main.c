@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-// sets of CONSTANS for maximum students
+// sets of CONSTANS for maximum students and maintenance
 #define MAX_STUDENTS 100
+#define MAX_MAINTENANCE 100
 
 /*struct for some information student, room and maintainence*/
+
 
 // structure for Room
 typedef struct
@@ -37,6 +39,9 @@ typedef struct
 } MaintenanceRequest;
 
 Student students[MAX_STUDENTS];
+MaintenanceRequest maintanance[MAX_MAINTENANCE];
+int totalMaintenance = 0;
+
 Room rooms[6] =
 	{
 		{
