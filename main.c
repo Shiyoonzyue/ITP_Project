@@ -9,7 +9,7 @@
 /*struct for some information student, room and maintainence*/
 
 
-// structure for Room
+// structure for Room 
 typedef struct
 {
 	int roomNo;
@@ -38,8 +38,11 @@ typedef struct
 	char severity[20];
 } MaintenanceRequest;
 
+// Array to store all maintenance requests
+// totalMaintenance keeps track of how many requests have been added
+
 Student students[MAX_STUDENTS];
-MaintenanceRequest maintenance[MAX_MAINTENANCE];
+MaintenanceRequest maintenance[MAX_MAINTENANCE];    
 int totalMaintenance = 0;
 
 Room rooms[6] =
@@ -253,6 +256,9 @@ strcpy(m->issueDescription status, "pending "); //to default status
 totalmaintenance++;
 printf("Maintenance request added successfully ! \n");
 }
+
+// Check if there are any maintenance requests
+// If none, print message and return
 
 void viewMaintenanceList(void){
 	if(totalMaintenance == 0){
