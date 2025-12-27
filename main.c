@@ -25,7 +25,7 @@ typedef struct
 	char name[50];
 	int level;
 	int roomNo;
-	double montlyFees; // NEW
+	double monthlyFees; // NEW
 	int paymentStatus; // NEW
 } Student;
 
@@ -47,17 +47,13 @@ int totalMaintenance = 0;
 
 Room rooms[6] =
 	{
-		{
-			101,
-			"Single",
-			1,
-			1,
-		},
-		{102, "Single", 1, 1},
-		{201, "Double", 2, 1},
-		{202, "Double", 2, 0},
-		{301, "Quad", 4, 1},
-		{302, "Quad", 4, 1}};
+		{101, "Single", 1, 1, 0.0, 0},
+		{102, "Single", 1, 1, 0.0, 0},
+		{201, "Double", 2, 1, 0.0, 0},
+		{202, "Double", 2, 0, 0.0, 0},
+		{301, "Quad", 4, 1, 0.0, 0},
+		{302, "Quad", 4, 1, 0.0, 0}
+	};
 
 int totalStudents = 0;
 
@@ -70,6 +66,8 @@ double calculateFee(void);
 void assignRoom(void);
 double calculatePenalty(void);
 int findRoomIndex(int roomNo);
+void viewMaintenanceList(void);
+int isRoomAvailable(Room *r);
 
 // function for file
 void saveStudentsToFile(void);
@@ -109,8 +107,8 @@ int main(void)
 		printf("2. Add Maintenance Request\n");
 		printf("3. Generate Report\n");
 		printf("4. Student List\n");
-		printf("5. Exit\n");
-		printf("6. View Maintenance List\n");
+		printf("5. View Maintenance List\n");
+		printf("6. Exit\n");
 		printf("Enter your choice: ");
 		if (scanf("%d", &choice) != 1)
 		{
@@ -135,15 +133,15 @@ int main(void)
 			studentList();
 			break;
 		case 5:
+			viewMaintenanceList();
+			break;
+		case 6:
 			saveStudentsToFile();
 			saveMaintenanceToFile();
 			printf("Exiting the program. Goodbye ta ta!\n");
 			loopStatus = 0;
 			break;
 			
-		case 6:
-			viewMaintenanceList();
-			break;
 			
 		default:
 			printf("\nInvalid choice, try again");
@@ -209,10 +207,10 @@ void studentList(void)
 		int roomIndex = findRoomIndex(students[i].roomNo);
 
 		printf("%-6d %-15s %-8d %-10d ",
-			   students[i].studentID,
-			   students[i].name,
-			   students[i].level,
-			   students[i].roomNo);
+				students[i].studentID,
+				students[i].name,
+				students[i].level,
+				students[i].roomNo);
 
 		if (roomIndex != -1)
 		{
@@ -236,9 +234,9 @@ void addMaintenanceRequest(void)
 MaintenanceRequest *m = &maintenance[totalMaintenance];
 
 printf("Enter Your Room Number : ");
-if (scanf(%d , &m->roomNo) != 1){
+if (scanf("%d" , &m->roomNo) != 1){
 	printf("invalid input.\n");
-	while(getchar() != '\n')  //clear the buffer
+	while(getchar() != '\n');  //clear the buffer
 	return;
 }
 
@@ -251,9 +249,9 @@ m->issueDescription [strcspn(m->issueDescription , "\n")] = '\0';
 printf("Enter the severity (Low/medium/High): ");
 scanf("%19s", m->severity);
 
-strcpy(m->issueDescription status, "pending "); //to default status
+strcpy(m->status, "Pending"); //to default status
 
-totalmaintenance++;
+totalMaintenance++;
 printf("Maintenance request added successfully ! \n");
 }
 
@@ -272,11 +270,11 @@ printf("\nMaintenance Requests\n");
     printf("---------------------------------------------------------\n");
 	
 	for (int i = 0; i< totalMaintenance; i++){
-		 printf("%-8d %-30s %-10s %-12s\n",
-               maintanance[i].roomNo,
-               maintanance[i].issueDescription,
-               maintanance[i].severity,
-               maintanance[i].status);
+		printf("%-8d %-30s %-10s %-12s\n",
+				maintenance[i].roomNo,
+				maintenance[i].issueDescription,
+				maintenance[i].severity,
+				maintenance[i].status);
 	}
 }
 		
@@ -298,7 +296,7 @@ void assignRoom()
 	{
 		char roomType[10];
 		printf("Enter Room Type (Single/Double/Quad): ");
-		scanf("%s", roomType);
+		scanf("%9s", roomType);
 
 		printf("Available Rooms of type %s:\n", roomType);
 		int found = 0;
@@ -392,7 +390,7 @@ void saveStudentsToFile(void)
 				students[i].studentID,
 				students[i].name,
 				students[i].roomNo,
-				students[i].montlyFees,
+				students[i].monthlyFees,
 				students[i].paymentStatus == 1 ? "Paid" : "Unpaid");
 	}
 
@@ -414,12 +412,12 @@ void loadStudentsFromFile(void)
 	totalStudents = 0;
 
 	while (fscanf(fp, "%d | %49[^|] | %d | %d |%lf | %s \n",
-				  &students[totalStudents].studentID,
-				  &students[totalStudents].name,
-				  &students[totalStudents].level,
-				  &students[totalStudents].roomNo,
-				  &students[totalStudents].montlyFees,
-				  &students[totalStudents].paymentStatus) == 6)
+				&students[totalStudents].studentID,
+				&students[totalStudents].name,
+				&students[totalStudents].level,
+				&students[totalStudents].roomNo,
+				&students[totalStudents].monthlyFees,
+				&students[totalStudents].paymentStatus) == 6)
 	{
 		totalStudents++;
 	}
