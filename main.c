@@ -39,7 +39,7 @@ typedef struct
 } MaintenanceRequest;
 
 Student students[MAX_STUDENTS];
-MaintenanceRequest maintanance[MAX_MAINTENANCE];
+MaintenanceRequest maintenance[MAX_MAINTENANCE];
 int totalMaintenance = 0;
 
 Room rooms[6] =
@@ -71,10 +71,14 @@ int findRoomIndex(int roomNo);
 // function for file
 void saveStudentsToFile(void);
 void loadStudentsFromFile(void);
+void saveMaintenanceToFile(void);
+void loadMaintenanceFromFile(void);
 
 int main(void)
 {
-	loadStudentsFromFile(); // load the saved file
+	loadStudentsFromFile();
+	loadMaintenanceFromFile();    // load the saved file
+	
 	int loopStatus = 1;
 
 	Student s1 = {1001, "Ridhwan", 1, 101};
@@ -103,6 +107,7 @@ int main(void)
 		printf("3. Generate Report\n");
 		printf("4. Student List\n");
 		printf("5. Exit\n");
+		printf("6. View Maintenance List\n");
 		printf("Enter your choice: ");
 		if (scanf("%d", &choice) != 1)
 		{
@@ -128,9 +133,15 @@ int main(void)
 			break;
 		case 5:
 			saveStudentsToFile();
-			printf("Exiting the program. Goodbye!\n");
+			saveMaintenanceToFile();
+			printf("Exiting the program. Goodbye ta ta!\n");
 			loopStatus = 0;
 			break;
+			
+		case 6:
+			viewMaintenanceList();
+			break;
+			
 		default:
 			printf("\nInvalid choice, try again");
 			break;
@@ -211,10 +222,59 @@ void studentList(void)
 	}
 }
 
-void addMaintenanceRequest()
+void addMaintenanceRequest(void)
 {
-	printf("Add Maintenance Request Page\n");
+	if (totalMaintenance >= MAX_MAINTENANCE){
+	
+	printf("Cannot add more maintenance request. You have reached Maximum request. \n");
+	return;
 }
+
+MaintenanceRequest *m = &maintenance[totalMaintenance];
+
+printf("Enter Your Room Number : ");
+if (scanf(%d , &m->roomNo) != 1){
+	printf("invalid input.\n");
+	while(getchar() != '\n')  //clear the buffer
+	return;
+}
+
+while(getchar() != '\n');  //clear the buffer
+
+printf("Enter Issue Description : ");
+fgets(m->issueDescription , sizeof(m->issueDescription ), stdin);
+m->issueDescription [strcspn(m->issueDescription , "\n")] = '\0';
+
+printf("Enter the severity (Low/medium/High): ");
+scanf("%19s", m->severity);
+
+strcpy(m->issueDescription status, "pending "); //to default status
+
+totalmaintenance++;
+printf("Maintenance request added successfully ! \n");
+}
+
+void viewMaintenanceList(void){
+	if(totalMaintenance == 0){
+		printf("No maintenance records found.\n");
+		return; 
+		
+}
+printf("\nMaintenance Requests\n");
+    printf("---------------------------------------------------------\n");
+    printf("%-8s %-30s %-10s %-12s\n", "RoomNo", "Issue", "Severity", "Status");
+    printf("---------------------------------------------------------\n");
+	
+	for (int i = 0; i< totalMaintenance; i++){
+		 printf("%-8d %-30s %-10s %-12s\n",
+               maintanance[i].roomNo,
+               maintanance[i].issueDescription,
+               maintanance[i].severity,
+               maintanance[i].status);
+	}
+}
+		
+		
 
 void generateReport()
 {
@@ -345,7 +405,7 @@ void loadStudentsFromFile(void)
 		return;
 	}
 
-	totalStudents == 0;
+	totalStudents = 0;
 
 	while (fscanf(fp, "%d | %49[^|] | %d | %d |%lf | %s \n",
 				  &students[totalStudents].studentID,
