@@ -47,12 +47,12 @@ int totalMaintenance = 0;
 
 Room rooms[6] =
 	{
-		{101, "Single", 1, 1, 0.0, 0},
-		{102, "Single", 1, 1, 0.0, 0},
-		{201, "Double", 2, 1, 0.0, 0},
-		{202, "Double", 2, 0, 0.0, 0},
-		{301, "Quad", 4, 1, 0.0, 0},
-		{302, "Quad", 4, 1, 0.0, 0}
+		{101, "Single", 1, 1},
+		{102, "Single", 1, 1},
+		{201, "Double", 2, 1},
+		{202, "Double", 2, 0},
+		{301, "Quad", 4, 1},
+		{302, "Quad", 4, 1}
 	};
 
 int totalStudents = 0;
@@ -78,21 +78,10 @@ void loadMaintenanceFromFile(void);
 int main(void)
 {
 	loadStudentsFromFile();
-	loadMaintenanceFromFile();    // load the saved file
+	printf("Loaded %d students from file.\n", totalStudents);
+	//loadMaintenanceFromFile();    // load the saved file
 	
 	int loopStatus = 1;
-
-	Student s1 = {1001, "Ridhwan", 1, 101};
-	Student s2 = {1002, "Yazid", 3, 102};
-	Student s3 = {1003, "Harry", 4, 201};
-	Student s4 = {1004, "Syamim", 2, 302};
-	Student s5 = {1005, "Nadzrul", 2, 301};
-
-	students[totalStudents++] = s1;
-	students[totalStudents++] = s2;
-	students[totalStudents++] = s3;
-	students[totalStudents++] = s4;
-	students[totalStudents++] = s5;
 
 	printf("\n\n\n---------------------------------\n");
 	printf("Welcome to Room Allocation System");
@@ -113,8 +102,7 @@ int main(void)
 		if (scanf("%d", &choice) != 1)
 		{
 			printf("Invalid input. Please enter a number.\n");
-			while (getchar() != '\n')
-				;
+			while (getchar() != '\n');
 			continue;
 		}
 
@@ -122,6 +110,7 @@ int main(void)
 		{
 		case 1:
 			addStudent();
+			saveStudentsToFile();
 			break;
 		case 2:
 			addMaintenanceRequest();
@@ -137,7 +126,7 @@ int main(void)
 			break;
 		case 6:
 			saveStudentsToFile();
-			saveMaintenanceToFile();
+			//saveMaintenanceToFile();
 			printf("Exiting the program. Goodbye ta ta!\n");
 			loopStatus = 0;
 			break;
@@ -194,33 +183,29 @@ void addStudent(void)
 	printf("Student added successfully with ID: %d\n", newStudent->studentID);
 }
 
-void studentList(void)
-{
-	int i;
-	printf("\n\nStudent List Page\n");
-	printf("------------------------------------------------------------\n");
-	printf("%-6s %-15s %-8s %-10s %-10s\n", "ID", "Name", "Level", "Room No", "Room Type");
-	printf("------------------------------------------------------------\n");
-
-	for (i = 0; i < totalStudents; i++)
-	{
-		int roomIndex = findRoomIndex(students[i].roomNo);
-
-		printf("%-6d %-15s %-8d %-10d ",
-				students[i].studentID,
-				students[i].name,
-				students[i].level,
-				students[i].roomNo);
-
-		if (roomIndex != -1)
-		{
-			printf("%-10s\n", rooms[roomIndex].type);
-		}
-		else
-		{
-			printf("%-10s\n", "Not Assigned");
-		}
+void studentList(void) {
+	if (totalStudents == 0) {
+		printf("\nNo students found in the system.\n");
+		return;
 	}
+
+	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s\n", "ID", "Name", "Level", "Room No", "Type", "Fee Status");
+	printf("----------------------------------------------------------------------------\n");
+
+	for (int i = 0; i < totalStudents; i++) {
+		int roomIndex = findRoomIndex(students[i].roomNo);
+		char *type = (roomIndex != -1) ? rooms[roomIndex].type : "N/A";
+		char *payment = (students[i].paymentStatus == 1) ? "Paid" : "Unpaid";
+
+		printf("%-6d %-20s %-8d %-10d %-10s %-10s\n",
+			students[i].studentID,
+			students[i].name,
+			students[i].level,
+			students[i].roomNo,
+			type,
+			payment);
+	}
+	printf("----------------------------------------------------------------------------\n");
 }
 
 void addMaintenanceRequest(void)
@@ -371,56 +356,54 @@ int isRoomAvailable(Room *r)
 }
 
 // file funtion definition (save file)
-void saveStudentsToFile(void)
-{
-	FILE *fp = fopen("students.txt", "w"); // set pointer called fp then make a file name students.txt
-
-	// condition for error
-	if (fp == NULL)
-	{
+void saveStudentsToFile(void) {
+	FILE *fp = fopen("students.txt", "w");
+	if (fp == NULL) {
 		printf("ERROR OPENING STUDENTS.TXT\n");
 		return;
 	}
 
-	// the for loop is important to goes through every students data start from the first student[0], until the last student
-	for (int i = 0; i < totalStudents; i++)
-	{
-		// format in table
-		fprintf(fp, "%d | %s | %d | %.2f | %s \n",
+	for (int i = 0; i < totalStudents; i++) {
+		// Save ID, then the name on a new line, then the numbers
+		fprintf(fp, "%d\n%s\n%d %d %.2f %d\n",
 				students[i].studentID,
 				students[i].name,
+				students[i].level,
 				students[i].roomNo,
 				students[i].monthlyFees,
-				students[i].paymentStatus == 1 ? "Paid" : "Unpaid");
+				students[i].paymentStatus);
 	}
-
-	// close the file and send succes message
 	fclose(fp);
-	printf("STUDENT DATA SAVED SUCCESSFULLY\n");
 }
 
 // file function definition (load file)
-void loadStudentsFromFile(void)
-{
+void loadStudentsFromFile(void) {
 	FILE *fp = fopen("students.txt", "r");
-
-	if (fp == NULL)
-	{
-		return;
-	}
+	if (fp == NULL) return;
 
 	totalStudents = 0;
+	for (int i = 0; i < 6; i++) rooms[i].currentOccupants = 0;
 
-	while (fscanf(fp, "%d | %49[^|] | %d | %d |%lf | %s \n",
-				&students[totalStudents].studentID,
-				&students[totalStudents].name,
+	while (totalStudents < MAX_STUDENTS) {
+		// Read ID
+		if (fscanf(fp, "%d\n", &students[totalStudents].studentID) != 1) break;
+
+		// Read Name (reads until newline)
+		fgets(students[totalStudents].name, sizeof(students[totalStudents].name), fp);
+		students[totalStudents].name[strcspn(students[totalStudents].name, "\n")] = '\0';
+
+		// Read the remaining numeric fields
+		if (fscanf(fp, "%d %d %lf %d\n",
 				&students[totalStudents].level,
 				&students[totalStudents].roomNo,
 				&students[totalStudents].monthlyFees,
-				&students[totalStudents].paymentStatus) == 6)
-	{
+				&students[totalStudents].paymentStatus) != 4) break;
+
+		// Update room occupants count based on loaded data
+		int idx = findRoomIndex(students[totalStudents].roomNo);
+		if (idx != -1) rooms[idx].currentOccupants++;
+
 		totalStudents++;
 	}
-
 	fclose(fp);
 }

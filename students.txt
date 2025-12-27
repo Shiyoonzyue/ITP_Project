@@ -1,5 +1,16 @@
-1001 | Ridhwan | 101 | 0.00 | Unpaid 
-1002 | Yazid | 102 | 0.00 | Unpaid 
-1003 | Harry | 201 | 0.00 | Unpaid 
-1004 | Syamim | 302 | 0.00 | Unpaid 
-1005 | Nadzrul | 301 | 0.00 | Unpaid 
+1001
+Ridhwan
+1 101 500.00 1
+1002
+Harry
+2 201 350.00 0
+1003
+Yazid
+3 301 200.00 1
+1004
+Syamim
+1 102 500.00 0
+1005
+Nadzrul
+1 302 500.00 0
+1006
