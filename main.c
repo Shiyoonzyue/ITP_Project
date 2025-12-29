@@ -68,7 +68,6 @@ void viewMaintenanceList(void);
 int isRoomAvailable(Room *r);
 
 // function for file
-void viewMaintenanceList(void);
 void updateMaintenanceStatus(void);
 void saveMaintenanceToFile(void);
 void loadMaintenanceFromFile(void);
@@ -112,7 +111,7 @@ int main(void)
 
 		switch (choice)
 		{
-	case 1:
+		case 1:
             addStudent();
             saveStudentsToFile();
             break;
@@ -217,7 +216,7 @@ void studentList(void)
 	printf("----------------------------------------------------------------------------\n");
 }
 
-void addMaintenanceRequest(void)
+void addMaintenanceRequest(void)  //funcction tambah student rquest
 {
 	if (totalMaintenance >= MAX_MAINTENANCE)
 	{
@@ -256,7 +255,7 @@ void addMaintenanceRequest(void)
 // Check if there are any maintenance requests
 // If none, print message and return
 
-void viewMaintenanceList(void)
+void viewMaintenanceList(void) //list dalam table student maintenance list
 {
 	if (totalMaintenance == 0)
 	{
@@ -278,7 +277,7 @@ void viewMaintenanceList(void)
 	}
 }
 
-void assignRoom()
+void assignRoom() 
 {
 	int studentIndex = totalStudents;
 	int assigned = 0;
@@ -369,7 +368,7 @@ void loadMaintenanceFromFile(void){
 
     FILE *fp = fopen("maintenance.txt", "r");
     if (fp == NULL)
-        return;   // file belum wujud, tak error
+        return;   // file belum wujud
 
     totalMaintenance = 0;
 
@@ -398,7 +397,7 @@ void loadMaintenanceFromFile(void){
     fclose(fp);
 }
 
-void saveMaintenanceToFile(void){
+void saveMaintenanceToFile(void){  //Save Maintenance request to Maintenance File
 
 
     FILE *fp = fopen("maintenance.txt", "w");
@@ -422,7 +421,7 @@ void saveMaintenanceToFile(void){
 void updateMaintenanceStatus(void){
 
     if (totalMaintenance == 0){
-        printf("Tiada rekod maintenance untuk dikemaskini.\n");
+        printf("No maintenance records to update.\n");
         return;
     }
 
@@ -441,7 +440,7 @@ void updateMaintenanceStatus(void){
             }
             else
             {
-                strcpy(maintenance[i].status, "Completed"); // 🌟 Bahagian ubah
+                strcpy(maintenance[i].status, "Completed"); // Bahgaian Ubah dari pending ke Compelted
                 printf("Status has been updated to Completed yeayy!!.\n");
             }
             break;
@@ -449,7 +448,7 @@ void updateMaintenanceStatus(void){
     }
 
     if (!found)
-        printf("Room Number tidak ditemui dalam rekod maintenance.\n");
+        printf("Room number not found in maintenance records..\n");
 }
 
 // ------------------------------FILE HANDLING SECTION---------------------------
@@ -604,7 +603,7 @@ void generateReport()
 			int maxRoomIndex = -1;
 
 			// maintenance chaeck
-			for (int i = 0; i < 6; i++) // loop
+			for (int i = 0; i < 6; i++) // loop	
 			{
 				if (roomCount[i] > maxIssues)
 				{
