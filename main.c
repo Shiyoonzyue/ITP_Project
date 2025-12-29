@@ -25,9 +25,11 @@ typedef struct
 	int level;
 	int roomNo;
 	double monthlyFees; // NEW
-	int paymentStatus;	// NEW
+	double penaltyAmout;// Addition
+	int paymentStatus;	// Addition
+	int daysOverdue;// Addition
 } Student;
-
+	
 // structure for maintanance request
 typedef struct
 {
@@ -62,7 +64,7 @@ void generateReport(void);
 void studentList(void);
 double calculateFee(int roomNo);
 void assignRoom(void);
-double calculatePenalty(void);
+double calculatePenalty(double baseFee, int daysOverdue);
 int findRoomIndex(int roomNo);
 void viewMaintenanceList(void);
 int isRoomAvailable(Room *r);
@@ -170,12 +172,34 @@ void addStudent(void)
 	if (scanf("%d", &newStudent->level) != 1 || newStudent->level < 1 || newStudent->level > 4)
 	{
 		printf("Invalid input for student level.\n");
-		while (getchar() != '\n')
-			;
+		while (getchar() != '\n');
 		return;
 	}
+	
 
 	assignRoom();
+	
+	double base = calculateFee(newStudent->roomNo);
+
+    // Step 3: Input days overdue to trigger penalty logic
+    printf("Enter days overdue (0 if paid on time): ");
+    scanf("%d", &newStudent->daysOverdue);
+
+    // Step 4: Calculate penalty and store total
+    newStudent->penaltyAmout = calculatePenalty(base, newStudent->daysOverdue);
+    newStudent->monthlyFees = base + newStudent->penaltyAmout;
+
+    // Step 5: Update payment status
+    printf("Enter payment status (1 for Paid, 0 for Unpaid): ");
+    scanf("%d", &newStudent->paymentStatus);
+
+    newStudent->studentID = 1000 + totalStudents + 1;
+    totalStudents++;
+    
+    printf("\n--- Success ---\n");
+    printf("Base Fee: RM %.2f\n", base);
+    printf("Penalty:  RM %.2f\n", newStudent->penaltyAmout);
+    printf("Total Due: RM %.2f\n", newStudent->monthlyFees);
 	/*--------------------------------------------------------------------*/
 	/* for calculate fee and payment status tracking*/
 	// use calculateFee() function here
@@ -350,8 +374,16 @@ double calculateFee(int roomNo) {
     return 0.0; 
 }
 
-double calculatePenalty()
+double calculatePenalty(double baseFee, int daysOverdue)
 {
+	if (daysOverdue > 30 ) // add 10 % if overdue by 30 days
+	{
+		return baseFee * 0.10;
+	}
+	else if (daysOverdue > 7)// add 5 % if overdue by 7 days
+	{
+		return baseFee * 0.05;
+	}
 	return 0.0;
 }
 

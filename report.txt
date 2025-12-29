@@ -3,7 +3,7 @@ ROOM ALLOCATION SYSTEM REPORT
 
 1. TOTAL MONTHLY REVENUE
 ------------------------------------
-Total revenue: RM 0.00
+Total revenue: RM 1.#R
 
 2. STUDENTS WITH UNPAID FEES
 ------------------------------------
