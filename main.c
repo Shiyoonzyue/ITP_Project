@@ -8,8 +8,7 @@
 
 /*struct for some information student, room and maintainence*/
 
-
-// structure for Room 
+// structure for Room
 typedef struct
 {
 	int roomNo;
@@ -26,7 +25,7 @@ typedef struct
 	int level;
 	int roomNo;
 	double monthlyFees; // NEW
-	int paymentStatus; // NEW
+	int paymentStatus;	// NEW
 } Student;
 
 // structure for maintanance request
@@ -42,7 +41,7 @@ typedef struct
 // totalMaintenance keeps track of how many requests have been added
 
 Student students[MAX_STUDENTS];
-MaintenanceRequest maintenance[MAX_MAINTENANCE];    
+MaintenanceRequest maintenance[MAX_MAINTENANCE];
 int totalMaintenance = 0;
 
 Room rooms[6] =
@@ -52,8 +51,7 @@ Room rooms[6] =
 		{201, "Double", 2, 1},
 		{202, "Double", 2, 0},
 		{301, "Quad", 4, 1},
-		{302, "Quad", 4, 1}
-	};
+		{302, "Quad", 4, 1}};
 
 int totalStudents = 0;
 
@@ -79,8 +77,8 @@ int main(void)
 {
 	loadStudentsFromFile();
 	printf("Loaded %d students from file.\n", totalStudents);
-	//loadMaintenanceFromFile();    // load the saved file
-	
+	// loadMaintenanceFromFile();    // load the saved file
+
 	int loopStatus = 1;
 
 	printf("\n\n\n---------------------------------\n");
@@ -102,7 +100,8 @@ int main(void)
 		if (scanf("%d", &choice) != 1)
 		{
 			printf("Invalid input. Please enter a number.\n");
-			while (getchar() != '\n');
+			while (getchar() != '\n')
+				;
 			continue;
 		}
 
@@ -126,12 +125,11 @@ int main(void)
 			break;
 		case 6:
 			saveStudentsToFile();
-			//saveMaintenanceToFile();
+			// saveMaintenanceToFile();
 			printf("Exiting the program. Goodbye ta ta!\n");
 			loopStatus = 0;
 			break;
-			
-			
+
 		default:
 			printf("\nInvalid choice, try again");
 			break;
@@ -183,8 +181,10 @@ void addStudent(void)
 	printf("Student added successfully with ID: %d\n", newStudent->studentID);
 }
 
-void studentList(void) {
-	if (totalStudents == 0) {
+void studentList(void)
+{
+	if (totalStudents == 0)
+	{
 		printf("\nNo students found in the system.\n");
 		return;
 	}
@@ -192,78 +192,83 @@ void studentList(void) {
 	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s\n", "ID", "Name", "Level", "Room No", "Type", "Fee Status");
 	printf("----------------------------------------------------------------------------\n");
 
-	for (int i = 0; i < totalStudents; i++) {
+	for (int i = 0; i < totalStudents; i++)
+	{
 		int roomIndex = findRoomIndex(students[i].roomNo);
 		char *type = (roomIndex != -1) ? rooms[roomIndex].type : "N/A";
 		char *payment = (students[i].paymentStatus == 1) ? "Paid" : "Unpaid";
 
 		printf("%-6d %-20s %-8d %-10d %-10s %-10s\n",
-			students[i].studentID,
-			students[i].name,
-			students[i].level,
-			students[i].roomNo,
-			type,
-			payment);
+			   students[i].studentID,
+			   students[i].name,
+			   students[i].level,
+			   students[i].roomNo,
+			   type,
+			   payment);
 	}
 	printf("----------------------------------------------------------------------------\n");
 }
 
 void addMaintenanceRequest(void)
 {
-	if (totalMaintenance >= MAX_MAINTENANCE){
-	
-	printf("Cannot add more maintenance request. You have reached Maximum request. \n");
-	return;
-}
+	if (totalMaintenance >= MAX_MAINTENANCE)
+	{
 
-MaintenanceRequest *m = &maintenance[totalMaintenance];
+		printf("Cannot add more maintenance request. You have reached Maximum request. \n");
+		return;
+	}
 
-printf("Enter Your Room Number : ");
-if (scanf("%d" , &m->roomNo) != 1){
-	printf("invalid input.\n");
-	while(getchar() != '\n');  //clear the buffer
-	return;
-}
+	MaintenanceRequest *m = &maintenance[totalMaintenance];
 
-while(getchar() != '\n');  //clear the buffer
+	printf("Enter Your Room Number : ");
+	if (scanf("%d", &m->roomNo) != 1)
+	{
+		printf("invalid input.\n");
+		while (getchar() != '\n')
+			; // clear the buffer
+		return;
+	}
 
-printf("Enter Issue Description : ");
-fgets(m->issueDescription , sizeof(m->issueDescription ), stdin);
-m->issueDescription [strcspn(m->issueDescription , "\n")] = '\0';
+	while (getchar() != '\n')
+		; // clear the buffer
 
-printf("Enter the severity (Low/medium/High): ");
-scanf("%19s", m->severity);
+	printf("Enter Issue Description : ");
+	fgets(m->issueDescription, sizeof(m->issueDescription), stdin);
+	m->issueDescription[strcspn(m->issueDescription, "\n")] = '\0';
 
-strcpy(m->status, "Pending"); //to default status
+	printf("Enter the severity (Low/medium/High): ");
+	scanf("%19s", m->severity);
 
-totalMaintenance++;
-printf("Maintenance request added successfully ! \n");
+	strcpy(m->status, "Pending"); // to default status
+
+	totalMaintenance++;
+	printf("Maintenance request added successfully ! \n");
 }
 
 // Check if there are any maintenance requests
 // If none, print message and return
 
-void viewMaintenanceList(void){
-	if(totalMaintenance == 0){
+void viewMaintenanceList(void)
+{
+	if (totalMaintenance == 0)
+	{
 		printf("No maintenance records found.\n");
-		return; 
-		
-}
-printf("\nMaintenance Requests\n");
-    printf("---------------------------------------------------------\n");
-    printf("%-8s %-30s %-10s %-12s\n", "RoomNo", "Issue", "Severity", "Status");
-    printf("---------------------------------------------------------\n");
-	
-	for (int i = 0; i< totalMaintenance; i++){
+		return;
+	}
+	printf("\nMaintenance Requests\n");
+	printf("---------------------------------------------------------\n");
+	printf("%-8s %-30s %-10s %-12s\n", "RoomNo", "Issue", "Severity", "Status");
+	printf("---------------------------------------------------------\n");
+
+	for (int i = 0; i < totalMaintenance; i++)
+	{
 		printf("%-8d %-30s %-10s %-12s\n",
-				maintenance[i].roomNo,
-				maintenance[i].issueDescription,
-				maintenance[i].severity,
-				maintenance[i].status);
+			   maintenance[i].roomNo,
+			   maintenance[i].issueDescription,
+			   maintenance[i].severity,
+			   maintenance[i].status);
 	}
 }
-		
-		
 
 void generateReport()
 {
@@ -356,14 +361,17 @@ int isRoomAvailable(Room *r)
 }
 
 // file funtion definition (save file)
-void saveStudentsToFile(void) {
+void saveStudentsToFile(void)
+{
 	FILE *fp = fopen("students.txt", "w");
-	if (fp == NULL) {
+	if (fp == NULL)
+	{
 		printf("ERROR OPENING STUDENTS.TXT\n");
 		return;
 	}
 
-	for (int i = 0; i < totalStudents; i++) {
+	for (int i = 0; i < totalStudents; i++)
+	{
 		// Save ID, then the name on a new line, then the numbers
 		fprintf(fp, "%d\n%s\n%d %d %.2f %d\n",
 				students[i].studentID,
@@ -377,16 +385,21 @@ void saveStudentsToFile(void) {
 }
 
 // file function definition (load file)
-void loadStudentsFromFile(void) {
+void loadStudentsFromFile(void)
+{
 	FILE *fp = fopen("students.txt", "r");
-	if (fp == NULL) return;
+	if (fp == NULL)
+		return;
 
 	totalStudents = 0;
-	for (int i = 0; i < 6; i++) rooms[i].currentOccupants = 0;
+	for (int i = 0; i < 6; i++)
+		rooms[i].currentOccupants = 0;
 
-	while (totalStudents < MAX_STUDENTS) {
+	while (totalStudents < MAX_STUDENTS)
+	{
 		// Read ID
-		if (fscanf(fp, "%d\n", &students[totalStudents].studentID) != 1) break;
+		if (fscanf(fp, "%d\n", &students[totalStudents].studentID) != 1)
+			break;
 
 		// Read Name (reads until newline)
 		fgets(students[totalStudents].name, sizeof(students[totalStudents].name), fp);
@@ -394,14 +407,16 @@ void loadStudentsFromFile(void) {
 
 		// Read the remaining numeric fields
 		if (fscanf(fp, "%d %d %lf %d\n",
-				&students[totalStudents].level,
-				&students[totalStudents].roomNo,
-				&students[totalStudents].monthlyFees,
-				&students[totalStudents].paymentStatus) != 4) break;
+				   &students[totalStudents].level,
+				   &students[totalStudents].roomNo,
+				   &students[totalStudents].monthlyFees,
+				   &students[totalStudents].paymentStatus) != 4)
+			break;
 
 		// Update room occupants count based on loaded data
 		int idx = findRoomIndex(students[totalStudents].roomNo);
-		if (idx != -1) rooms[idx].currentOccupants++;
+		if (idx != -1)
+			rooms[idx].currentOccupants++;
 
 		totalStudents++;
 	}
