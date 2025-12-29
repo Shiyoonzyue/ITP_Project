@@ -270,11 +270,6 @@ void viewMaintenanceList(void)
 	}
 }
 
-void generateReport()
-{
-	printf("Generate Report Page\n");
-}
-
 void assignRoom()
 {
 	int studentIndex = totalStudents;
@@ -360,7 +355,8 @@ int isRoomAvailable(Room *r)
 	return r->currentOccupants < r->maxOccupants;
 }
 
-// file funtion definition (save file)
+// FILE HANDLING SECTION
+//  file funtion definition (save file)
 void saveStudentsToFile(void)
 {
 	FILE *fp = fopen("students.txt", "w");
@@ -421,4 +417,31 @@ void loadStudentsFromFile(void)
 		totalStudents++;
 	}
 	fclose(fp);
+}
+
+// generate report function
+void generateReport()
+{
+	FILE *fp = fopen("report.txt", "w");
+	if (fp == NULL)
+	{
+		printf("ERROR CREATING REPORT FILE\n");
+		return;
+	}
+
+	else
+	{
+		fprintf(fp, "ROOM ALLOCATION SYSTEM REPORT\n");
+		fprintf(fp, "------------------------------------\n\n");
+
+		double totalRevenue = 0.0;
+
+		for (int i = 0; i < totalStudents; i++)
+		{
+			if (students[i].paymentStatus == 1)
+			{ // PAID
+				totalRevenue += students[i].monthlyFees;
+			}
+		}
+	}
 }
