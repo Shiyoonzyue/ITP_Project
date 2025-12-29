@@ -68,8 +68,8 @@ void viewMaintenanceList(void);
 int isRoomAvailable(Room *r);
 
 // function for file
-void saveStudentsToFile(void);
-void loadStudentsFromFile(void);
+void viewMaintenanceList(void);
+void updateMaintenanceStatus(void);
 void saveMaintenanceToFile(void);
 void loadMaintenanceFromFile(void);
 
@@ -77,6 +77,8 @@ int main(void)
 {
 	loadStudentsFromFile();
 	printf("Loaded %d students from file.\n", totalStudents);
+	loadMaintenanceFromFile();
+	printf("Loaded %d maintenance records from file.\n", totalMaintenance);
 	// loadMaintenanceFromFile();    // load the saved file
 
 	int loopStatus = 1;
@@ -95,7 +97,8 @@ int main(void)
 		printf("3. Generate Report\n");
 		printf("4. Student List\n");
 		printf("5. View Maintenance List\n");
-		printf("6. Exit\n");
+		printf("6. Update Maintenance Status\n");
+		printf("7. Exit\n");
 		printf("Enter your choice: ");
 		if (scanf("%d", &choice) != 1)
 		{
@@ -107,32 +110,35 @@ int main(void)
 
 		switch (choice)
 		{
-		case 1:
-			addStudent();
-			saveStudentsToFile();
-			break;
-		case 2:
-			addMaintenanceRequest();
-			break;
-		case 3:
-			generateReport();
-			break;
-		case 4:
-			studentList();
-			break;
-		case 5:
-			viewMaintenanceList();
-			break;
-		case 6:
-			saveStudentsToFile();
-			// saveMaintenanceToFile();
-			printf("Exiting the program. Goodbye ta ta!\n");
-			loopStatus = 0;
-			break;
+	case 1:
+            addStudent();
+            saveStudentsToFile();
+            break;
+        case 2:
+            addMaintenanceRequest();
+            break;
+        case 3:
+            generateReport();
+            break;
+        case 4:
+            studentList();
+            break;
+        case 5:
+            viewMaintenanceList();
+            break;
+        case 6: // 🌟 Panggil fungsi update status
+            updateMaintenanceStatus();
+            break;
+        case 7:
+            saveStudentsToFile();
+            saveMaintenanceToFile();
+            printf("Exiting the program. Goodbye ta ta!\n");
+            loopStatus = 0;
+            break;
+        default:
+            printf("\nInvalid choice, try again");
+            break;
 
-		default:
-			printf("\nInvalid choice, try again");
-			break;
 		}
 	} while (loopStatus == 1);
 
@@ -353,6 +359,129 @@ int findRoomIndex(int roomNo)
 int isRoomAvailable(Room *r)
 {
 	return r->currentOccupants < r->maxOccupants;
+	
+}
+
+void loadMaintenanceFromFile(void){
+
+
+    FILE *fp = fopen("maintenance.txt", "r");
+    if (fp == NULL)
+        return;   // file belum wujud, tak error
+
+    totalMaintenance = 0;
+
+    while (totalMaintenance < MAX_MAINTENANCE){
+	
+    
+        // baca room number
+        if (fscanf(fp, "%d\n", &maintenance[totalMaintenance].roomNo) != 1)
+            break;
+
+        // baca issue description
+        fgets(maintenance[totalMaintenance].issueDescription,
+              sizeof(maintenance[totalMaintenance].issueDescription), fp);
+        maintenance[totalMaintenance].issueDescription[
+            strcspn(maintenance[totalMaintenance].issueDescription, "\n")] = '\0';
+
+        // baca severity dan status
+        if (fscanf(fp, "%19s %19s\n",
+                   maintenance[totalMaintenance].severity,
+                   maintenance[totalMaintenance].status) != 2)
+            break;
+
+        totalMaintenance++;
+    }
+
+    fclose(fp);
+}
+
+void saveMaintenanceToFile(void){
+
+
+    FILE *fp = fopen("maintenance.txt", "w");
+    if (fp == NULL){
+    
+        printf("ERROR OPENING MAINTENANCE FILE\n");
+        return;
+    }
+
+    for (int i = 0; i < totalMaintenance; i++){
+    
+        fprintf(fp, "%d\n%s\n%s %s\n",
+                maintenance[i].roomNo,
+                maintenance[i].issueDescription,
+                maintenance[i].severity,
+                maintenance[i].status);
+    }
+
+    fclose(fp);
+}
+void updateMaintenanceStatus(void){
+
+    if (totalMaintenance == 0){
+        printf("Tiada rekod maintenance untuk dikemaskini.\n");
+        return;
+    }
+
+    int roomNo, found = 0;
+    printf("Masukkan Room Number untuk kemaskini status: ");
+    scanf("%d", &roomNo);
+
+    for (int i = 0; i < totalMaintenance; i++){
+        if (maintenance[i].roomNo == roomNo){
+		
+            found = 1;
+            printf("Status semasa: %s\n", maintenance[i].status);
+            if (strcmp(maintenance[i].status, "Completed") == 0)
+            {
+                printf("Maintenance ini telah selesai.\n");
+            }
+            else
+            {
+                strcpy(maintenance[i].status, "Completed"); // 🌟 Bahagian ubah
+                printf("Status telah dikemaskini kepada Completed.\n");
+            }
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Room Number tidak ditemui dalam rekod maintenance.\n");
+}
+
+void addMaintenanceRequest(void){
+
+    if (totalMaintenance >= MAX_MAINTENANCE)
+    {
+        printf("Cannot add more maintenance requests. Maximum limit reached.\n");
+        return;
+    }
+
+    MaintenanceRequest *m = &maintenance[totalMaintenance];
+
+    printf("Enter Room Number: ");
+    if (scanf("%d", &m->roomNo) != 1) {
+        printf("Invalid input.\n");
+        while (getchar() != '\n');
+        return;
+    }
+
+    while (getchar() != '\n');
+
+    printf("Enter Issue Description: ");
+    fgets(m->issueDescription, sizeof(m->issueDescription), stdin);
+    m->issueDescription[strcspn(m->issueDescription, "\n")] = '\0';
+
+    printf("Enter Severity (Low/Medium/High): ");
+    scanf("%19s", m->severity);
+
+    strcpy(m->status, "Pending"); // default status
+
+    totalMaintenance++;
+    printf("Maintenance request added successfully!\n");
+
+    saveMaintenanceToFile(); // simpan terus
 }
 
 // ------------------------------FILE HANDLING SECTION---------------------------
