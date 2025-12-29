@@ -13,3 +13,12 @@ Syamim
 1005
 Nadzrul
 1 302 500.00 0
+1006
+Ilham Nor Syamim
+1 301 0.00 0
+1007
+Ilham Syamim
+4 301 0.00 0
+1008
+Yazid Yasin
+3 202 0.00 0

@@ -72,6 +72,8 @@ void viewMaintenanceList(void);
 void updateMaintenanceStatus(void);
 void saveMaintenanceToFile(void);
 void loadMaintenanceFromFile(void);
+void loadStudentsFromFile(void);
+void saveStudentsToFile(void);
 
 int main(void)
 {
@@ -425,22 +427,22 @@ void updateMaintenanceStatus(void){
     }
 
     int roomNo, found = 0;
-    printf("Masukkan Room Number untuk kemaskini status: ");
+    printf("Enter Room Number For status : ");
     scanf("%d", &roomNo);
 
     for (int i = 0; i < totalMaintenance; i++){
         if (maintenance[i].roomNo == roomNo){
 		
             found = 1;
-            printf("Status semasa: %s\n", maintenance[i].status);
+            printf("Current Status: %s\n", maintenance[i].status);
             if (strcmp(maintenance[i].status, "Completed") == 0)
             {
-                printf("Maintenance ini telah selesai.\n");
+                printf("Maintenance Completed!! yeay.\n");
             }
             else
             {
                 strcpy(maintenance[i].status, "Completed"); // 🌟 Bahagian ubah
-                printf("Status telah dikemaskini kepada Completed.\n");
+                printf("Status has been updated to Completed yeayy!!.\n");
             }
             break;
         }
@@ -448,40 +450,6 @@ void updateMaintenanceStatus(void){
 
     if (!found)
         printf("Room Number tidak ditemui dalam rekod maintenance.\n");
-}
-
-void addMaintenanceRequest(void){
-
-    if (totalMaintenance >= MAX_MAINTENANCE)
-    {
-        printf("Cannot add more maintenance requests. Maximum limit reached.\n");
-        return;
-    }
-
-    MaintenanceRequest *m = &maintenance[totalMaintenance];
-
-    printf("Enter Room Number: ");
-    if (scanf("%d", &m->roomNo) != 1) {
-        printf("Invalid input.\n");
-        while (getchar() != '\n');
-        return;
-    }
-
-    while (getchar() != '\n');
-
-    printf("Enter Issue Description: ");
-    fgets(m->issueDescription, sizeof(m->issueDescription), stdin);
-    m->issueDescription[strcspn(m->issueDescription, "\n")] = '\0';
-
-    printf("Enter Severity (Low/Medium/High): ");
-    scanf("%19s", m->severity);
-
-    strcpy(m->status, "Pending"); // default status
-
-    totalMaintenance++;
-    printf("Maintenance request added successfully!\n");
-
-    saveMaintenanceToFile(); // simpan terus
 }
 
 // ------------------------------FILE HANDLING SECTION---------------------------
