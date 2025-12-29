@@ -491,6 +491,28 @@ void generateReport()
 					roomCount[idx]++;
 				}
 			}
+
+			int maxIssues = 0;
+			int maxRoomIndex = -1;
+
+			for (int i = 0; i < 6; i++)
+			{
+				if (roomCount[i] > maxIssues)
+				{
+					maxIssues = roomCount[i];
+					maxRoomIndex = i;
+				}
+			}
+
+			if (maxRoomIndex != -1)
+			{
+				fprintf(fp, "Room %d has the highest number of maintenance issues (%d).\n",
+						rooms[maxRoomIndex].roomNo,
+						maxIssues);
+			}
 		}
+
+		fclose(fp);
+		printf("Report generated succesfully✨\n");
 	}
 }
