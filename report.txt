@@ -12,7 +12,8 @@ ID: 1004 | Name: Syamim | Room: 102 | Fee: RM 500.00
 ID: 1005 | Name: Nadzrul | Room: 302 | Fee: RM 500.00
 ID: 1006 | Name: Ilham Nor Syamim | Room: 301 | Fee: RM 0.00
 ID: 1007 | Name: Ilham Syamim | Room: 301 | Fee: RM 0.00
+ID: 1008 | Name: Yazid Yasin | Room: 202 | Fee: RM 0.00
 
 3. ROOM WITH MOST MAINTENANCE ISSUES
 -----------------------------------
-Room 301 has the highest number of maintenance issues (1).
+Room 202 has the highest number of maintenance issues (1).

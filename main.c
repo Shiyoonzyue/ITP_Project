@@ -60,7 +60,7 @@ void addStudent(void);
 void addMaintenanceRequest(void);
 void generateReport(void);
 void studentList(void);
-double calculateFee(void);
+double calculateFee(int roomNo);
 void assignRoom(void);
 double calculatePenalty(void);
 int findRoomIndex(int roomNo);
@@ -335,9 +335,19 @@ void assignRoom()
 
 /* Small Operational Functions */
 
-double calculateFee()
-{
-	return 0.0;
+double calculateFee(int roomNo) {
+    int idx = findRoomIndex(roomNo);
+    if (idx == -1)
+
+    if (strcmp(rooms[idx].type, "Single") == 0) {
+        return 350.00;
+    } else if (strcmp(rooms[idx].type, "Double") == 0) {
+        return 250.00;
+    } else if (strcmp(rooms[idx].type, "Quad") == 0) {
+        return 150.00;
+    }
+
+    return 0.0; 
 }
 
 double calculatePenalty()
