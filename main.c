@@ -443,5 +443,54 @@ void generateReport()
 				totalRevenue += students[i].monthlyFees;
 			}
 		}
+
+		fprintf(fp, "1. TOTAL MONTHLY REVENUE\n");
+		fprintf(fp, "------------------------------------\n");
+		fprintf(fp, "Total revenue: RM %.2f\n\n");
+		fprintf(fp, "2. STUDENTS WITH UNPAID FEES\n");
+		fprintf(fp, "------------------------------------\n");
+
+		int unpaidFound = 0;
+
+		for (int i = 0; i < totalStudents; i++)
+		{
+			if (students[i].paymentStatus == 0)
+			{ // unpaid
+				fprintf(fp, "ID: %d | Name: %s | Room: %d | Fee: RM %.2f\n",
+						students[i].studentID,
+						students[i].name,
+						students[i].roomNo,
+						students[i].monthlyFees);
+
+				unpaidFound = 1;
+			}
+		}
+
+		if (!unpaidFound)
+		{
+			fprintf(fp, "All students have paid their fees.\n");
+		}
+		fprintf(fp, "\n");
+		fprintf(fp, "3. ROOM WITH MOST MAINTENANCE ISSUES\n");
+		fprintf(fp, "-----------------------------------\n");
+
+		if (totalMaintenance == 0)
+		{
+			fprintf(fp, "No maintenance records available.\n");
+		}
+
+		else
+		{
+			int roomCount[6] = {0};
+
+			for (int i = 0; i < totalMaintenance; i++)
+			{
+				int idx = findRoomIndex(maintenance[i].roomNo);
+				if (idx != -1)
+				{
+					roomCount[idx]++;
+				}
+			}
+		}
 	}
 }
