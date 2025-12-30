@@ -181,25 +181,25 @@ void addStudent(void)
 	
 	double base = calculateFee(newStudent->roomNo);
 
-    // Step 3: Input days overdue to trigger penalty logic
-    printf("Enter days overdue (0 if paid on time): ");
-    scanf("%d", &newStudent->daysOverdue);
+	// Step 3: Input days overdue to trigger penalty logic
+	printf("Enter days overdue (0 if paid on time): ");
+	scanf("%d", &newStudent->daysOverdue);
 
-    // Step 4: Calculate penalty and store total
-    newStudent->penaltyAmout = calculatePenalty(base, newStudent->daysOverdue);
-    newStudent->monthlyFees = base + newStudent->penaltyAmout;
+	// Step 4: Calculate penalty and store total
+	newStudent->penaltyAmout = calculatePenalty(base, newStudent->daysOverdue);
+	newStudent->monthlyFees = base + newStudent->penaltyAmout;
 
-    // Step 5: Update payment status
-    printf("Enter payment status (1 for Paid, 0 for Unpaid): ");
-    scanf("%d", &newStudent->paymentStatus);
+	// Step 5: Update payment status
+	printf("Enter payment status (1 for Paid, 0 for Unpaid): ");
+	scanf("%d", &newStudent->paymentStatus);
 
-    newStudent->studentID = 1000 + totalStudents + 1;
-    totalStudents++;
-    
-    printf("\n--- Success ---\n");
-    printf("Base Fee: RM %.2f\n", base);
-    printf("Penalty:  RM %.2f\n", newStudent->penaltyAmout);
-    printf("Total Due: RM %.2f\n", newStudent->monthlyFees);
+	newStudent->studentID = 1000 + totalStudents + 1;
+	totalStudents++;
+	
+	printf("\n--- Success ---\n");
+	printf("Base Fee: RM %.2f\n", base);
+	printf("Penalty:  RM %.2f\n", newStudent->penaltyAmout);
+	printf("Total Due: RM %.2f\n", newStudent->monthlyFees);
 	/*--------------------------------------------------------------------*/
 	/* for calculate fee and payment status tracking*/
 	// use calculateFee() function here
@@ -220,7 +220,7 @@ void studentList(void)
 		return;
 	}
 
-	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s\n", "ID", "Name", "Level", "Room No", "Type", "Fee Status");
+	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s %-14s\n", "ID", "Name", "Level", "Room No", "Type", "Fee", "Status");
 	printf("----------------------------------------------------------------------------\n");
 
 	for (int i = 0; i < totalStudents; i++)
@@ -229,13 +229,14 @@ void studentList(void)
 		char *type = (roomIndex != -1) ? rooms[roomIndex].type : "N/A";
 		char *payment = (students[i].paymentStatus == 1) ? "Paid" : "Unpaid";
 
-		printf("%-6d %-20s %-8d %-10d %-10s %-10s\n",
-			   students[i].studentID,
-			   students[i].name,
-			   students[i].level,
-			   students[i].roomNo,
-			   type,
-			   payment);
+		printf("%-6d %-20s %-8d %-10d %-10s %-10.2f %-14s\n",
+				students[i].studentID,
+				students[i].name,
+				students[i].level,
+				students[i].roomNo,
+				type,
+				students[i].monthlyFees,
+				payment);
 	}
 	printf("----------------------------------------------------------------------------\n");
 }
@@ -294,10 +295,10 @@ void viewMaintenanceList(void) //list dalam table student maintenance list
 	for (int i = 0; i < totalMaintenance; i++)
 	{
 		printf("%-8d %-30s %-10s %-12s\n",
-			   maintenance[i].roomNo,
-			   maintenance[i].issueDescription,
-			   maintenance[i].severity,
-			   maintenance[i].status);
+				maintenance[i].roomNo,
+				maintenance[i].issueDescription,
+				maintenance[i].severity,
+				maintenance[i].status);
 	}
 }
 
@@ -360,18 +361,18 @@ void assignRoom()
 /* Small Operational Functions */
 
 double calculateFee(int roomNo) {
-    int idx = findRoomIndex(roomNo);
-    if (idx == -1)
+	int idx = findRoomIndex(roomNo);
+	if (idx == -1)
 
-    if (strcmp(rooms[idx].type, "Single") == 0) {
-        return 350.00;
-    } else if (strcmp(rooms[idx].type, "Double") == 0) {
-        return 250.00;
-    } else if (strcmp(rooms[idx].type, "Quad") == 0) {
-        return 150.00;
-    }
+	if (strcmp(rooms[idx].type, "Single") == 0) {
+		return 350.00;
+	} else if (strcmp(rooms[idx].type, "Double") == 0) {
+		return 250.00;
+	} else if (strcmp(rooms[idx].type, "Quad") == 0) {
+		return 150.00;
+	}
 
-    return 0.0; 
+	return 0.0; 
 }
 
 double calculatePenalty(double baseFee, int daysOverdue)
@@ -408,89 +409,89 @@ int isRoomAvailable(Room *r)
 void loadMaintenanceFromFile(void){
 
 
-    FILE *fp = fopen("maintenance.txt", "r");
-    if (fp == NULL)
-        return;   // file belum wujud
+	FILE *fp = fopen("maintenance.txt", "r");
+	if (fp == NULL)
+		return;   // file belum wujud
 
-    totalMaintenance = 0;
+	totalMaintenance = 0;
 
-    while (totalMaintenance < MAX_MAINTENANCE){
+	while (totalMaintenance < MAX_MAINTENANCE){
 	
-    
-        // baca room number
-        if (fscanf(fp, "%d\n", &maintenance[totalMaintenance].roomNo) != 1)
-            break;
+	
+		// baca room number
+		if (fscanf(fp, "%d\n", &maintenance[totalMaintenance].roomNo) != 1)
+			break;
 
-        // baca issue description
-        fgets(maintenance[totalMaintenance].issueDescription,
-              sizeof(maintenance[totalMaintenance].issueDescription), fp);
-        maintenance[totalMaintenance].issueDescription[
-            strcspn(maintenance[totalMaintenance].issueDescription, "\n")] = '\0';
+		// baca issue description
+		fgets(maintenance[totalMaintenance].issueDescription,
+			sizeof(maintenance[totalMaintenance].issueDescription), fp);
+		maintenance[totalMaintenance].issueDescription[
+			strcspn(maintenance[totalMaintenance].issueDescription, "\n")] = '\0';
 
-        // baca severity dan status
-        if (fscanf(fp, "%19s %19s\n",
-                   maintenance[totalMaintenance].severity,
-                   maintenance[totalMaintenance].status) != 2)
-            break;
+		// baca severity dan status
+		if (fscanf(fp, "%19s %19s\n",
+				maintenance[totalMaintenance].severity,
+				maintenance[totalMaintenance].status) != 2)
+			break;
 
-        totalMaintenance++;
-    }
+		totalMaintenance++;
+	}
 
-    fclose(fp);
+	fclose(fp);
 }
 
 void saveMaintenanceToFile(void){  //Save Maintenance request to Maintenance File
 
 
-    FILE *fp = fopen("maintenance.txt", "w");
-    if (fp == NULL){
-    
-        printf("ERROR OPENING MAINTENANCE FILE\n");
-        return;
-    }
+	FILE *fp = fopen("maintenance.txt", "w");
+	if (fp == NULL){
+	
+		printf("ERROR OPENING MAINTENANCE FILE\n");
+		return;
+	}
 
-    for (int i = 0; i < totalMaintenance; i++){
-    
-        fprintf(fp, "%d\n%s\n%s %s\n",
-                maintenance[i].roomNo,
-                maintenance[i].issueDescription,
-                maintenance[i].severity,
-                maintenance[i].status);
-    }
+	for (int i = 0; i < totalMaintenance; i++){
+	
+		fprintf(fp, "%d\n%s\n%s %s\n",
+				maintenance[i].roomNo,
+				maintenance[i].issueDescription,
+				maintenance[i].severity,
+				maintenance[i].status);
+	}
 
-    fclose(fp);
+	fclose(fp);
 }
 void updateMaintenanceStatus(void){
 
-    if (totalMaintenance == 0){
-        printf("No maintenance records to update.\n");
-        return;
-    }
+	if (totalMaintenance == 0){
+		printf("No maintenance records to update.\n");
+		return;
+	}
 
-    int roomNo, found = 0;
-    printf("Enter Room Number For status : ");
-    scanf("%d", &roomNo);
+	int roomNo, found = 0;
+	printf("Enter Room Number For status : ");
+	scanf("%d", &roomNo);
 
-    for (int i = 0; i < totalMaintenance; i++){
-        if (maintenance[i].roomNo == roomNo){
+	for (int i = 0; i < totalMaintenance; i++){
+		if (maintenance[i].roomNo == roomNo){
 		
-            found = 1;
-            printf("Current Status: %s\n", maintenance[i].status);
-            if (strcmp(maintenance[i].status, "Completed") == 0)
-            {
-                printf("Maintenance Completed!! yeay.\n");
-            }
-            else
-            {
-                strcpy(maintenance[i].status, "Completed"); // Bahgaian Ubah dari pending ke Compelted
-                printf("Status has been updated to Completed yeayy!!.\n");
-            }
-            break;
-        }
-    }
+			found = 1;
+			printf("Current Status: %s\n", maintenance[i].status);
+			if (strcmp(maintenance[i].status, "Completed") == 0)
+			{
+				printf("Maintenance Completed!! yeay.\n");
+			}
+			else
+			{
+				strcpy(maintenance[i].status, "Completed"); // Bahgaian Ubah dari pending ke Compelted
+				printf("Status has been updated to Completed yeayy!!.\n");
+			}
+			break;
+		}
+	}
 
-    if (!found)
-        printf("Room number not found in maintenance records..\n");
+	if (!found)
+		printf("Room number not found in maintenance records..\n");
 }
 
 // ------------------------------FILE HANDLING SECTION---------------------------
@@ -542,10 +543,10 @@ void loadStudentsFromFile(void)
 
 		// Read the remaining numeric fields
 		if (fscanf(fp, "%d %d %lf %d\n",
-				   &students[totalStudents].level,
-				   &students[totalStudents].roomNo,
-				   &students[totalStudents].monthlyFees,
-				   &students[totalStudents].paymentStatus) != 4)
+					&students[totalStudents].level,
+					&students[totalStudents].roomNo,
+					&students[totalStudents].monthlyFees,
+					&students[totalStudents].paymentStatus) != 4)
 			break;
 
 		// Update room occupants count based on loaded data
