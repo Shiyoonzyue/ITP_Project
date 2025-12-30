@@ -68,6 +68,8 @@ double calculatePenalty(double baseFee, int daysOverdue);
 int findRoomIndex(int roomNo);
 void viewMaintenanceList(void);
 int isRoomAvailable(Room *r);
+int hasStudentInRoom(int roomNo);
+
 
 // function for file
 void updateMaintenanceStatus(void);
@@ -240,42 +242,78 @@ void studentList(void)
 	}
 	printf("----------------------------------------------------------------------------\n");
 }
+int hasStudentInRoom(int roomNo){   //before add maintenance check student in room new function
+	for (int i = 0; i < totalStudents; i++){
+		if (students[i].roomNo == roomNo){
+			return 1; //student available
+		}
+	}
+	return 0; // no student
+}
 
-void addMaintenanceRequest(void)  //funcction tambah student rquest
-{
-	if (totalMaintenance >= MAX_MAINTENANCE)
-	{
 
-		printf("Cannot add more maintenance request. You have reached Maximum request. \n");
+void addMaintenanceRequest(void){
+	if (totalMaintenance >= MAX_MAINTENANCE){
+		printf("Cannot add more maintenance requests.\n");
 		return;
 	}
 
 	MaintenanceRequest *m = &maintenance[totalMaintenance];
+	int roomIndex = -1;
 
-	printf("Enter Your Room Number : ");
-	if (scanf("%d", &m->roomNo) != 1)
-	{
-		printf("invalid input.\n");
-		while (getchar() != '\n')
-			; // clear the buffer
-		return;
+	//check for valid room only for available student
+	while (1){
+		printf("Enter Room Number: ");
+		if (scanf("%d", &m->roomNo) != 1){
+			printf("Invalid input. Please enter a number.\n");
+			while (getchar() != '\n');
+			continue;
+		}
+
+		roomIndex = findRoomIndex(m->roomNo);
+
+		if (roomIndex == -1){
+			printf("Room number does not exist. Try again.\n");
+		}
+		else if (!hasStudentInRoom(m->roomNo)){
+			printf("No student registered in this room. Maintenance request is not allowed.\n");
+		}
+		else{
+			break; // ✅ VALID ROOM
+		}
 	}
 
-	while (getchar() != '\n')
-		; // clear the buffer
+	while (getchar() != '\n'); 
 
-	printf("Enter Issue Description : ");
+	//description for issue
+	printf("Enter Issue Description: ");
 	fgets(m->issueDescription, sizeof(m->issueDescription), stdin);
 	m->issueDescription[strcspn(m->issueDescription, "\n")] = '\0';
 
-	printf("Enter the severity (Low/medium/High): ");
-	scanf("%19s", m->severity);
+//validation for severity
+	while (1){
+		printf("Enter Severity (Low / Medium / High): ");
+		scanf("%19s", m->severity);
 
-	strcpy(m->status, "Pending"); // to default status
+		if (strcmp(m->severity, "Low") == 0 ||
+		    strcmp(m->severity, "Medium") == 0 ||
+		    strcmp(m->severity, "High") == 0)
+		{
+			break;
+		}
+
+		printf("Invalid severity. Please enter Low, Medium, or High only.\n");
+	}
+
+//output status
+	strcpy(m->status, "Pending");
 
 	totalMaintenance++;
-	printf("Maintenance request added successfully ! \n");
+
+	printf("Maintenance request added successfully.\n");
 }
+
+
 
 // Check if there are any maintenance requests
 // If none, print message and return
@@ -462,36 +500,44 @@ void saveMaintenanceToFile(void){  //Save Maintenance request to Maintenance Fil
 	fclose(fp);
 }
 void updateMaintenanceStatus(void){
-
-	if (totalMaintenance == 0){
+	if (totalMaintenance == 0)
+	{
 		printf("No maintenance records to update.\n");
 		return;
 	}
 
-	int roomNo, found = 0;
-	printf("Enter Room Number For status : ");
-	scanf("%d", &roomNo);
+	int roomNo;
+	int found = 0;
 
-	for (int i = 0; i < totalMaintenance; i++){
-		if (maintenance[i].roomNo == roomNo){
-		
-			found = 1;
-			printf("Current Status: %s\n", maintenance[i].status);
-			if (strcmp(maintenance[i].status, "Completed") == 0)
-			{
-				printf("Maintenance Completed!! yeay.\n");
+	while (!found){
+		printf("Enter Room Number to update status: ");
+		if (scanf("%d", &roomNo) != 1){
+			printf("Invalid input. Please enter  other number.\n");
+			while (getchar() != '\n');
+			continue;
+		}
+
+		for (int i = 0; i < totalMaintenance; i++){
+			if (maintenance[i].roomNo == roomNo){
+				found = 1;
+				printf("Current Status: %s\n", maintenance[i].status);
+
+				if (strcmp(maintenance[i].status, "Completed") == 0){
+					printf("This maintenance request is already completed.\n");
+				}
+				else{
+					strcpy(maintenance[i].status, "Completed");
+					printf("Status updated to Completed successfully.\n");
+				}
+				break;
 			}
-			else
-			{
-				strcpy(maintenance[i].status, "Completed"); // Bahgaian Ubah dari pending ke Compelted
-				printf("Status has been updated to Completed yeayy!!.\n");
-			}
-			break;
+		}
+
+		if (!found)
+		{
+			printf("Room number not found in the maintenance records. Please try again.\n");
 		}
 	}
-
-	if (!found)
-		printf("Room number not found in maintenance records..\n");
 }
 
 // ------------------------------FILE HANDLING SECTION---------------------------
