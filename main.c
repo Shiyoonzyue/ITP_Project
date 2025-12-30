@@ -25,9 +25,10 @@ typedef struct
 	int level;
 	int roomNo;
 	double monthlyFees; // NEW
-	double penaltyAmout;// Addition
+	double penaltyAmount;// Addition
 	int paymentStatus;	// Addition
 	int daysOverdue;// Addition
+	double BaseFee;//Addition
 } Student;
 	
 // structure for maintanance request
@@ -162,6 +163,9 @@ void addStudent(void)
 
 	// Input student details
 	Student *newStudent = &students[totalStudents];
+	
+	newStudent->penaltyAmount = 0.0;
+    newStudent->daysOverdue = 0;
 
 	while (getchar() != '\n')
 		; // Clear input buffer
@@ -181,17 +185,29 @@ void addStudent(void)
 
 	assignRoom();
 	
-	double base = calculateFee(newStudent->roomNo);
+	double BaseFee = calculateFee(newStudent->roomNo);
 
-	// Step 3: Input days overdue to trigger penalty logic
+	newStudent->BaseFee = calculateFee(newStudent->roomNo);
+	
+	newStudent->penaltyAmount =
+    calculatePenalty(newStudent->BaseFee, newStudent->daysOverdue);
+    
+    newStudent->monthlyFees =
+    newStudent->BaseFee + newStudent->penaltyAmount;
+	
+	//Input days overdue to trigger penalty logic
 	printf("Enter days overdue (0 if paid on time): ");
 	scanf("%d", &newStudent->daysOverdue);
 
-	// Step 4: Calculate penalty and store total
-	newStudent->penaltyAmout = calculatePenalty(base, newStudent->daysOverdue);
-	newStudent->monthlyFees = base + newStudent->penaltyAmout;
-
-	// Step 5: Update payment status
+	// Calculate penalty and store total
+	
+	newStudent->penaltyAmount =
+        calculatePenalty(newStudent->BaseFee, newStudent->daysOverdue);
+        
+        newStudent->monthlyFees =
+        newStudent->BaseFee + newStudent->penaltyAmount;
+	
+	// Update payment status
 	printf("Enter payment status (1 for Paid, 0 for Unpaid): ");
 	scanf("%d", &newStudent->paymentStatus);
 
@@ -199,8 +215,8 @@ void addStudent(void)
 	totalStudents++;
 	
 	printf("\n--- Success ---\n");
-	printf("Base Fee: RM %.2f\n", base);
-	printf("Penalty:  RM %.2f\n", newStudent->penaltyAmout);
+	printf("Base Fee: RM %.2f\n", newStudent->BaseFee );
+	printf("Penalty:  RM %.2f\n", newStudent->penaltyAmount);
 	printf("Total Due: RM %.2f\n", newStudent->monthlyFees);
 	/*--------------------------------------------------------------------*/
 	/* for calculate fee and payment status tracking*/
@@ -212,6 +228,7 @@ void addStudent(void)
 	newStudent->studentID = 1000 + totalStudents + 1;
 	totalStudents++;
 	printf("Student added successfully with ID: %d\n", newStudent->studentID);
+	
 }
 
 void studentList(void)
@@ -222,7 +239,7 @@ void studentList(void)
 		return;
 	}
 
-	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s %-14s\n", "ID", "Name", "Level", "Room No", "Type", "Fee", "Status");
+	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s %-14s\n", "ID", "Name", "Level", "Room No", "Type", "BaseFee", "Penalty", "Overdue" "Status");
 	printf("----------------------------------------------------------------------------\n");
 
 	for (int i = 0; i < totalStudents; i++)
@@ -237,6 +254,9 @@ void studentList(void)
 				students[i].level,
 				students[i].roomNo,
 				type,
+				students[i].BaseFee,
+				students[i].penaltyAmount,
+       			students[i].daysOverdue,
 				students[i].monthlyFees,
 				payment);
 	}
@@ -560,7 +580,9 @@ void saveStudentsToFile(void)
 				students[i].name,
 				students[i].level,
 				students[i].roomNo,
-				students[i].monthlyFees,
+				students[i].BaseFee,
+				students[i].penaltyAmount,
+				students[i].daysOverdue,
 				students[i].paymentStatus);
 	}
 	fclose(fp);
@@ -592,6 +614,9 @@ void loadStudentsFromFile(void)
 					&students[totalStudents].level,
 					&students[totalStudents].roomNo,
 					&students[totalStudents].monthlyFees,
+					&students[totalStudents].BaseFee,
+					&students[totalStudents].penaltyAmount,
+					&students[totalStudents].daysOverdue,
 					&students[totalStudents].paymentStatus) != 4)
 			break;
 
@@ -652,6 +677,9 @@ void generateReport()
 						students[i].studentID,
 						students[i].name,
 						students[i].roomNo,
+						students[i].monthlyFees - students[i].penaltyAmount,
+ 						students[i].penaltyAmount,
+ 						students[i].daysOverdue,
 						students[i].monthlyFees);
 
 				unpaidFound = 1; // mark at least one students have paid
