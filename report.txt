@@ -1,20 +1,16 @@
 ROOM ALLOCATION SYSTEM REPORT
-------------------------------------
+=================================
 
 1. TOTAL MONTHLY REVENUE
-------------------------------------
-Total revenue: RM nan
+---------------------------------
+Total Revenue: RM 1200.00
 
-2. STUDENTS WITH UNPAID FEES
-------------------------------------
-ID: 1002 | Name: Harry | Room: 201 | Fee: RM 350.00
+2. ROOM WITH MOST MAINTENANCE ISSUES
+---------------------------------
+Room Number: 102
+Total Issues: 2
+
+3. STUDENTS WITH UNPAID FEES
+---------------------------------
 ID: 1004 | Name: Syamim | Room: 102 | Fee: RM 500.00
-ID: 1005 | Name: Nadzrul | Room: 302 | Fee: RM 500.00
-ID: 1006 | Name: Ilham Nor Syamim | Room: 301 | Fee: RM 0.00
-ID: 1007 | Name: Ilham Syamim | Room: 301 | Fee: RM 0.00
-ID: 1008 | Name: Yazid Yasin | Room: 202 | Fee: RM 0.00
-ID: 0 | Name:  | Room: 0 | Fee: RM 0.00
-
-3. ROOM WITH MOST MAINTENANCE ISSUES
------------------------------------
-Room 202 has the highest number of maintenance issues (1).
+ID: 1006 | Name: y | Room: 201 | Fee: RM 250.00
