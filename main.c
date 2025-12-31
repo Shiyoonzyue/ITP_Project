@@ -809,103 +809,109 @@ void loadStudentsFromFile(void)
 }
 
 // generate report function
-void generateReport(void)
+void generateReport()
 {
-	FILE *fp = fopen("report.txt", "w");
-	if (fp == NULL)
+	FILE *fp = fopen("report.txt", "w"); // create report.txt and set pointer called fp
+	if (fp == NULL)						 // if file failed to open
 	{
 		printf("ERROR CREATING REPORT FILE\n");
-		return;
+		return; // stop function
 	}
 
-	fprintf(fp, "ROOM ALLOCATION SYSTEM REPORT\n");
-	fprintf(fp, "=================================\n\n");
-
-	/* -------------------------------
-	   1. TOTAL MONTHLY REVENUE
-	-------------------------------- */
-	double totalRevenue = 0.0;
-
-	for (int i = 0; i < totalStudents; i++)
+	else // iffile create successfully
 	{
-		if (students[i].paymentStatus == 1)
+		// header
+		fprintf(fp, "ROOM ALLOCATION SYSTEM REPORT\n");
+		fprintf(fp, "------------------------------------\n\n");
+
+		double totalRevenue = 0.0; // to store total revenue
+
+		// this section is for loop all students available
+		for (int i = 0; i < totalStudents; i++) // loop all students i
 		{
-			totalRevenue += students[i].monthlyFees;
-		}
-	}
-
-	fprintf(fp, "1. TOTAL MONTHLY REVENUE\n");
-	fprintf(fp, "---------------------------------\n");
-	fprintf(fp, "Total Revenue: RM %.2f\n\n", totalRevenue);
-
-	/* -------------------------------
-	   2. ROOM WITH MOST MAINTENANCE ISSUES
-	-------------------------------- */
-	fprintf(fp, "2. ROOM WITH MOST MAINTENANCE ISSUES\n");
-	fprintf(fp, "---------------------------------\n");
-
-	if (totalMaintenance == 0)
-	{
-		fprintf(fp, "No maintenance records available.\n\n");
-	}
-	else
-	{
-		int roomIssueCount[6] = {0};
-
-		for (int i = 0; i < totalMaintenance; i++)
-		{
-			int idx = findRoomIndex(maintenance[i].roomNo);
-			if (idx != -1)
-			{
-				roomIssueCount[idx]++;
+			if (students[i].paymentStatus == 1)			 // only count if student paid
+			{											 // PAID
+				totalRevenue += students[i].monthlyFees; // add each paid students fee to total
 			}
 		}
 
-		int maxIssues = 0;
-		int maxRoomIndex = -1;
+		// body 1
+		fprintf(fp, "1. TOTAL MONTHLY REVENUE\n");
+		fprintf(fp, "------------------------------------\n");
+		fprintf(fp, "Total revenue: RM %.2f\n\n", totalRevenue); // display total revenue
 
-		for (int i = 0; i < 6; i++)
+		// body 2
+		fprintf(fp, "2. STUDENTS WITH UNPAID FEES\n");
+		fprintf(fp, "------------------------------------\n");
+
+		int unpaidFound = 0; // to store unpaid students
+
+		for (int i = 0; i < totalStudents; i++) // loop students
 		{
-			if (roomIssueCount[i] > maxIssues)
-			{
-				maxIssues = roomIssueCount[i];
-				maxRoomIndex = i;
+			if (students[i].paymentStatus == 0) // unpaid studnts to print into table
+			{									// unpaid
+				// printf unpaid students info
+				fprintf(fp, "ID: %d | Name: %s | Room: %d | Fee: RM %.2f\n",
+						students[i].studentID,
+						students[i].name,
+						students[i].roomNo,
+						students[i].monthlyFees);
+
+				unpaidFound = 1; // mark at least one students have paid
 			}
 		}
 
-		if (maxRoomIndex != -1)
+		// if there is no unpaid students then print this message
+		if (!unpaidFound)
 		{
-			fprintf(fp, "Room Number: %d\n", rooms[maxRoomIndex].roomNo);
-			fprintf(fp, "Total Issues: %d\n\n", maxIssues);
+			fprintf(fp, "All students have paid their fees.\n");
 		}
-	}
+		fprintf(fp, "\n");
 
-	/* -------------------------------
-	   3. STUDENTS WITH UNPAID FEES
-	-------------------------------- */
-	fprintf(fp, "3. STUDENTS WITH UNPAID FEES\n");
-	fprintf(fp, "---------------------------------\n");
+		// body 3
+		fprintf(fp, "3. ROOM WITH MOST MAINTENANCE ISSUES\n");
+		fprintf(fp, "-----------------------------------\n");
 
-	int unpaidFound = 0;
-
-	for (int i = 0; i < totalStudents; i++)
-	{
-		if (students[i].paymentStatus == 0)
+		if (totalMaintenance == 0)
 		{
-			fprintf(fp, "ID: %d | Name: %s | Room: %d | Fee: RM %.2f\n",
-					students[i].studentID,
-					students[i].name,
-					students[i].roomNo,
-					students[i].monthlyFees);
-			unpaidFound = 1;
+			fprintf(fp, "No maintenance records available.\n");
 		}
-	}
 
-	if (!unpaidFound)
-	{
-		fprintf(fp, "All students have paid their fees.\n");
-	}
+		else
+		{
+			int roomIssueCount[6] = {0}; // array to count issues each room
 
-	fclose(fp);
-	printf("Report generated successfully.\n");
+			// convert room number into array and count each problem room
+			for (int i = 0; i < totalMaintenance; i++)
+			{
+				int idx = findRoomIndex(maintenance[i].roomNo);
+				if (idx != -1)
+				{
+					roomIssueCount[idx]++;
+				}
+			}
+
+			int maxIssues = 0; // store numer of issues
+			int maxRoomIndex = -1;
+
+			// maintenance chaeck
+			for (int i = 0; i < 6; i++) // loop
+			{
+				if (roomIssueCount[i] > maxIssues)
+				{
+					maxIssues = roomIssueCount[i]; // assign maximum room issue
+					maxRoomIndex = i;
+				}
+			}
+
+			if (maxRoomIndex != -1)
+			{
+				fprintf(fp, "Room Number: %d\n", rooms[maxRoomIndex].roomNo);
+				fprintf(fp, "Total Issue: %d\n\n", maxIssues);
+			}
+		}
+
+		fclose(fp); // close then a message
+		printf("Report generated succesfully✨\n");
+	}
 }
