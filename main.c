@@ -25,10 +25,8 @@ typedef struct
 	int level;
 	int roomNo;
 	double monthlyFees; // NEW
-	double penaltyAmount;// Addition
-	int paymentStatus;	// Addition
-	int daysOverdue;// Addition
-	double BaseFee;//Addition
+	int paymentStatus; // 0 = Unpaid, 1 = Paid
+	double feesPaid;
 } Student;
 	
 // structure for maintanance request
@@ -49,12 +47,12 @@ int totalMaintenance = 0;
 
 Room rooms[6] =
 	{
-		{101, "Single", 1, 1},
-		{102, "Single", 1, 1},
-		{201, "Double", 2, 1},
+		{101, "Single", 1, 0},
+		{102, "Single", 1, 0},
+		{201, "Double", 2, 0},
 		{202, "Double", 2, 0},
-		{301, "Quad", 4, 1},
-		{302, "Quad", 4, 1}};
+		{301, "Quad", 4, 0},
+		{302, "Quad", 4, 0}};
 
 int totalStudents = 0;
 
@@ -65,6 +63,7 @@ void generateReport(void);
 void studentList(void);
 double calculateFee(int roomNo);
 void assignRoom(void);
+void paymentStatusUpdate(void);
 double calculatePenalty(double baseFee, int daysOverdue);
 int findRoomIndex(int roomNo);
 void viewMaintenanceList(void);
@@ -98,13 +97,14 @@ int main(void)
 		int choice;
 
 		printf("\n\n\nDashboard\n");
-		printf("1. Add Student\n");
-		printf("2. Add Maintenance Request\n");
-		printf("3. Generate Report\n");
-		printf("4. Student List\n");
-		printf("5. View Maintenance List\n");
-		printf("6. Update Maintenance Status\n");
-		printf("7. Exit\n");
+		printf("1. Student List\n");
+		printf("2. Add Student\n");
+		printf("3. View Maintenance List\n");
+		printf("4. Add Maintenance Request\n");
+		printf("5. Update Maintenance Status\n");
+		printf("6. Payment Status Update\n");
+		printf("7. Generate Report\n");
+		printf("8. Exit\n");
 		printf("Enter your choice: ");
 		if (scanf("%d", &choice) != 1)
 		{
@@ -116,34 +116,38 @@ int main(void)
 
 		switch (choice)
 		{
-		case 1:
-            addStudent();
-            saveStudentsToFile();
-            break;
-        case 2:
-            addMaintenanceRequest();
-            break;
-        case 3:
-            generateReport();
-            break;
-        case 4:
-            studentList();
-            break;
-        case 5:
-            viewMaintenanceList();
-            break;
-        case 6: // 🌟 Panggil fungsi update status
-            updateMaintenanceStatus();
-            break;
-        case 7:
-            saveStudentsToFile();
-            saveMaintenanceToFile();
-            printf("Exiting the program. Goodbye ta ta!\n");
-            loopStatus = 0;
-            break;
-        default:
-            printf("\nInvalid choice, try again");
-            break;
+			case 1:
+				studentList();
+				break;
+			case 2:
+				addStudent();
+				saveStudentsToFile();
+				break;
+			case 3:
+				viewMaintenanceList();
+				break;
+			case 4:
+				addMaintenanceRequest();
+				break;
+			case 5:
+				updateMaintenanceStatus();
+				break;
+			case 6:
+				paymentStatusUpdate();
+				saveStudentsToFile();
+				break;
+			case 7:
+				generateReport();
+				break;
+			case 8:
+				saveStudentsToFile();
+				saveMaintenanceToFile();
+				printf("Exiting the program. Goodbye ta ta!\n");
+				loopStatus = 0;
+				break;
+			default:
+				printf("\nInvalid choice, try again");
+				break;
 
 		}
 	} while (loopStatus == 1);
@@ -163,67 +167,24 @@ void addStudent(void)
 
 	// Input student details
 	Student *newStudent = &students[totalStudents];
-	
-	newStudent->penaltyAmount = 0.0;
-    newStudent->daysOverdue = 0;
-
-	while (getchar() != '\n')
-		; // Clear input buffer
+	while (getchar() != '\n'); // Clear input buffer
 
 	printf("Enter Student Name: ");
 	fgets(newStudent->name, sizeof(newStudent->name), stdin);
 	newStudent->name[strcspn(newStudent->name, "\n")] = '\0';
 
-	printf("Enter Student Level (1/2/3/4): ");
-	if (scanf("%d", &newStudent->level) != 1 || newStudent->level < 1 || newStudent->level > 4)
-	{
-		printf("Invalid input for student level.\n");
-		while (getchar() != '\n');
-		return;
+	while(1){
+		printf("Enter Student Level (1/2/3/4): ");
+		if (scanf("%d", &newStudent->level) != 1 || newStudent->level < 1 || newStudent->level > 4)
+		{
+			printf("Invalid input for student level.\n");
+			while (getchar() != '\n');
+			continue;
+		}
+		break;
 	}
-	
 
 	assignRoom();
-	
-	double BaseFee = calculateFee(newStudent->roomNo);
-
-	newStudent->BaseFee = calculateFee(newStudent->roomNo);
-	
-	newStudent->penaltyAmount =
-    calculatePenalty(newStudent->BaseFee, newStudent->daysOverdue);
-    
-    newStudent->monthlyFees =
-    newStudent->BaseFee + newStudent->penaltyAmount;
-	
-	//Input days overdue to trigger penalty logic
-	printf("Enter days overdue (0 if paid on time): ");
-	scanf("%d", &newStudent->daysOverdue);
-
-	// Calculate penalty and store total
-	
-	newStudent->penaltyAmount =
-        calculatePenalty(newStudent->BaseFee, newStudent->daysOverdue);
-        
-        newStudent->monthlyFees =
-        newStudent->BaseFee + newStudent->penaltyAmount;
-	
-	// Update payment status
-	printf("Enter payment status (1 for Paid, 0 for Unpaid): ");
-	scanf("%d", &newStudent->paymentStatus);
-
-	newStudent->studentID = 1000 + totalStudents + 1;
-	totalStudents++;
-	
-	printf("\n--- Success ---\n");
-	printf("Base Fee: RM %.2f\n", newStudent->BaseFee );
-	printf("Penalty:  RM %.2f\n", newStudent->penaltyAmount);
-	printf("Total Due: RM %.2f\n", newStudent->monthlyFees);
-	/*--------------------------------------------------------------------*/
-	/* for calculate fee and payment status tracking*/
-	// use calculateFee() function here
-	// use calculatePenalty() function here
-
-	/*--------------------------------------------------------------------*/
 
 	newStudent->studentID = 1000 + totalStudents + 1;
 	totalStudents++;
@@ -239,8 +200,8 @@ void studentList(void)
 		return;
 	}
 
-	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s %-14s\n", "ID", "Name", "Level", "Room No", "Type", "BaseFee", "Penalty", "Overdue" "Status");
-	printf("----------------------------------------------------------------------------\n");
+	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s %-14s %-14s\n", "ID", "Name", "Level", "Room No", "Type", "Fees", "Status", "Fees Paid (including penalty)");
+	printf("-----------------------------------------------------------------------------------------------------------------------\n");
 
 	for (int i = 0; i < totalStudents; i++)
 	{
@@ -248,19 +209,17 @@ void studentList(void)
 		char *type = (roomIndex != -1) ? rooms[roomIndex].type : "N/A";
 		char *payment = (students[i].paymentStatus == 1) ? "Paid" : "Unpaid";
 
-		printf("%-6d %-20s %-8d %-10d %-10s %-10.2f %-14s\n",
+		printf("%-6d %-20s %-8d %-10d %-10s %-10.2f %-14s %-14.2f\n",
 				students[i].studentID,
 				students[i].name,
 				students[i].level,
 				students[i].roomNo,
 				type,
-				students[i].BaseFee,
-				students[i].penaltyAmount,
-       			students[i].daysOverdue,
 				students[i].monthlyFees,
-				payment);
+				payment,
+				students[i].feesPaid);
 	}
-	printf("----------------------------------------------------------------------------\n");
+	printf("-----------------------------------------------------------------------------------------------------------------------\n");
 }
 int hasStudentInRoom(int roomNo){   //before add maintenance check student in room new function
 	for (int i = 0; i < totalStudents; i++){
@@ -316,8 +275,8 @@ void addMaintenanceRequest(void){
 		scanf("%19s", m->severity);
 
 		if (strcmp(m->severity, "Low") == 0 ||
-		    strcmp(m->severity, "Medium") == 0 ||
-		    strcmp(m->severity, "High") == 0)
+			strcmp(m->severity, "Medium") == 0 ||
+			strcmp(m->severity, "High") == 0)
 		{
 			break;
 		}
@@ -396,8 +355,7 @@ void assignRoom()
 		if (scanf("%d", &chosenRoomNo) != 1)
 		{
 			printf("Invalid input for room number.\n");
-			while (getchar() != '\n')
-				;
+			while (getchar() != '\n');
 			continue;
 		}
 
@@ -405,46 +363,128 @@ void assignRoom()
 		int roomIndex = findRoomIndex(chosenRoomNo);
 		if (roomIndex == -1 || strcmp(rooms[roomIndex].type, roomType) != 0 || rooms[roomIndex].currentOccupants >= rooms[roomIndex].maxOccupants)
 		{
-			printf("Room %d is not valid or full. Please try again.\n");
+			printf("Room %d is not valid or full. Please try again.\n", chosenRoomNo);
 			continue;
 		}
+		
+		assigned = 1;
 
+		if (strcmp(roomType, "Single") == 0)
+		{
+			students[studentIndex].monthlyFees = 350.0;
+		}
+		else if (strcmp(roomType, "Double") == 0)
+		{
+			students[studentIndex].monthlyFees = 250.0;
+		}
+		else if (strcmp(roomType, "Quad") == 0)
+		{
+			students[studentIndex].monthlyFees = 150.0;
+		}
+		students[studentIndex].paymentStatus = 0; // Unpaid by default
+		students[studentIndex].feesPaid = 0.0;
 		students[studentIndex].roomNo = chosenRoomNo;
 		rooms[roomIndex].currentOccupants++;
-		assigned = 1;
 		printf("Room %d assigned to student %s successfully.\n", chosenRoomNo, students[studentIndex].name);
 	}
 }
 
-/* Small Operational Functions */
-
-double calculateFee(int roomNo) {
-	int idx = findRoomIndex(roomNo);
-	if (idx == -1)
-
-	if (strcmp(rooms[idx].type, "Single") == 0) {
-		return 350.00;
-	} else if (strcmp(rooms[idx].type, "Double") == 0) {
-		return 250.00;
-	} else if (strcmp(rooms[idx].type, "Quad") == 0) {
-		return 150.00;
+void paymentStatusUpdate(void){
+	// Function to update payment status of a student
+	int studentID;
+	while(1){
+		while(1){
+			printf("Enter Student ID to update payment status: ");
+			if (scanf("%d", &studentID) != 1){
+				printf("Invalid input. Please enter a number.\n");
+				while (getchar() != '\n');
+				continue;
+			}
+			break;
+		}
+	
+		int found = 0; // Search for the student by ID
+		for (int i = 0; i < totalStudents; i++){
+			if (students[i].studentID == studentID){
+				found = 1;
+				if (students[i].paymentStatus == 1){
+					printf("Student %s has already paid their fees.\n", students[i].name);
+				}
+				else{
+					int daysOverdue;
+					printf("Current payment status: Unpaid\n");
+					printf("Student name: %s\n", students[i].name);
+					printf("Room No: %d\n", students[i].roomNo);
+					printf("Room Type: ");
+					int roomIndex = findRoomIndex(students[i].roomNo);
+					if (roomIndex != -1){
+						printf("%s\n", rooms[roomIndex].type);
+					}
+					else{
+						printf("N/A\n");
+					}
+					while (1){
+						printf("Enter payment overdue in days: ");
+						if (scanf("%d", &daysOverdue) != 1 || daysOverdue < 0){
+							printf("Invalid input for days overdue.\n");
+							while (getchar() != '\n');
+							continue;
+						}
+						break;
+					}
+					printf("Original Monthly Fees: RM %.2f\n", students[i].monthlyFees);
+					printf("Days Overdue: %d days\n", daysOverdue);
+					printf("Penalty Applied: RM %.2f\n\n", calculatePenalty(students[i].monthlyFees, daysOverdue));
+					printf("Total Amount: RM %.2f\n", students[i].monthlyFees + calculatePenalty(students[i].monthlyFees, daysOverdue));
+					int confirm;
+					while(1){
+						printf("Confirm Payment? (1 for Yes / 0 for No): ");
+						if (scanf("%d", &confirm) != 1 || (confirm != 0 && confirm != 1)){
+							printf("Invalid input for confirmation.\n");
+							while (getchar() != '\n');
+							continue;
+						}
+						break;
+					}
+					if (confirm == 0){
+						printf("Payment update cancelled.\n");
+						return;
+					} else {
+						students[i].feesPaid = students[i].monthlyFees + calculatePenalty(students[i].monthlyFees, daysOverdue);
+						students[i].paymentStatus = 1; // Mark as paid
+						printf("Payment status for student %s updated to Paid successfully.\n", students[i].name);
+					}
+				}
+				return;
+			} else {
+				found = 0;
+			}
+		}
+		if (!found){
+			printf("Student ID %d not found.\n", studentID);
+			continue;
+		}
 	}
-
-	return 0.0; 
 }
+/* Small Operational Functions */
 
 double calculatePenalty(double baseFee, int daysOverdue)
 {
-	if (daysOverdue > 30 ) // add 10 % if overdue by 30 days
+	if (daysOverdue > 7 && daysOverdue <= 30)
 	{
-		return baseFee * 0.10;
+		return baseFee * 0.05; // 5% penalty
 	}
-	else if (daysOverdue > 7)// add 5 % if overdue by 7 days
+	else if (daysOverdue > 30)
 	{
-		return baseFee * 0.05;
+		return baseFee * 0.10; // 10% penalty
 	}
-	return 0.0;
+	else
+	{
+		return 0.0; // No penalty
+	}
 }
+
+
 
 int findRoomIndex(int roomNo)
 {
@@ -519,6 +559,7 @@ void saveMaintenanceToFile(void){  //Save Maintenance request to Maintenance Fil
 
 	fclose(fp);
 }
+
 void updateMaintenanceStatus(void){
 	if (totalMaintenance == 0)
 	{
@@ -575,15 +616,14 @@ void saveStudentsToFile(void)
 	for (int i = 0; i < totalStudents; i++)
 	{
 		// Save ID, then the name on a new line, then the numbers
-		fprintf(fp, "%d\n%s\n%d %d %.2f %d\n",
+		fprintf(fp, "%d\n%s\n%d %d %.2f %d %.2f\n",
 				students[i].studentID,
 				students[i].name,
 				students[i].level,
 				students[i].roomNo,
-				students[i].BaseFee,
-				students[i].penaltyAmount,
-				students[i].daysOverdue,
-				students[i].paymentStatus);
+				students[i].monthlyFees,
+				students[i].paymentStatus,
+				students[i].feesPaid);
 	}
 	fclose(fp);
 }
@@ -610,14 +650,12 @@ void loadStudentsFromFile(void)
 		students[totalStudents].name[strcspn(students[totalStudents].name, "\n")] = '\0';
 
 		// Read the remaining numeric fields
-		if (fscanf(fp, "%d %d %lf %d\n",
+		if (fscanf(fp, "%d %d %lf %d %lf\n",
 					&students[totalStudents].level,
 					&students[totalStudents].roomNo,
 					&students[totalStudents].monthlyFees,
-					&students[totalStudents].BaseFee,
-					&students[totalStudents].penaltyAmount,
-					&students[totalStudents].daysOverdue,
-					&students[totalStudents].paymentStatus) != 4)
+					&students[totalStudents].paymentStatus,
+					&students[totalStudents].feesPaid) != 5)
 			break;
 
 		// Update room occupants count based on loaded data
@@ -677,9 +715,6 @@ void generateReport()
 						students[i].studentID,
 						students[i].name,
 						students[i].roomNo,
-						students[i].monthlyFees - students[i].penaltyAmount,
- 						students[i].penaltyAmount,
- 						students[i].daysOverdue,
 						students[i].monthlyFees);
 
 				unpaidFound = 1; // mark at least one students have paid

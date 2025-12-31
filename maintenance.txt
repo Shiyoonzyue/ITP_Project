@@ -4,3 +4,12 @@ High Completed
 202
 Kepala Kipas Tercabut
 Low Pending
+102
+Langsir terbakar
+High Completed
+102
+lampu rosak
+Medium Pending
+102
+Tandas tersumbat
+High Pending
