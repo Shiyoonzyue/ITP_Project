@@ -128,9 +128,11 @@ int main(void)
 				break;
 			case 4:
 				addMaintenanceRequest();
+				saveMaintenanceToFile();
 				break;
 			case 5:
 				updateMaintenanceStatus();
+				saveMaintenanceToFile();
 				break;
 			case 6:
 				paymentStatusUpdate();
@@ -169,9 +171,15 @@ void addStudent(void)
 	Student *newStudent = &students[totalStudents];
 	while (getchar() != '\n'); // Clear input buffer
 
-	printf("Enter Student Name: ");
+	printf("Enter Student Name (Enter 0 to cancel): ");
 	fgets(newStudent->name, sizeof(newStudent->name), stdin);
 	newStudent->name[strcspn(newStudent->name, "\n")] = '\0';
+
+	if (strcmp(newStudent->name, "0") == 0)
+	{
+		printf("Student addition cancelled.\n");
+		return;
+	}
 
 	while(1){
 		printf("Enter Student Level (1/2/3/4): ");
@@ -242,11 +250,16 @@ void addMaintenanceRequest(void){
 
 	//check for valid room only for available student
 	while (1){
-		printf("Enter Room Number: ");
+		printf("Enter Room Number (Enter 0 to cancel): ");
 		if (scanf("%d", &m->roomNo) != 1){
 			printf("Invalid input. Please enter a number.\n");
 			while (getchar() != '\n');
 			continue;
+		}
+
+		if (m->roomNo == 0){
+			printf("Maintenance request cancelled.\n");
+			return;
 		}
 
 		roomIndex = findRoomIndex(m->roomNo);
@@ -258,7 +271,7 @@ void addMaintenanceRequest(void){
 			printf("No student registered in this room. Maintenance request is not allowed.\n");
 		}
 		else{
-			break; // ✅ VALID ROOM
+			break;
 		}
 	}
 
@@ -394,12 +407,18 @@ void paymentStatusUpdate(void){
 	int studentID;
 	while(1){
 		while(1){
-			printf("Enter Student ID to update payment status: ");
+			printf("Enter Student ID to update payment status (Enter 0 to cancel): ");
 			if (scanf("%d", &studentID) != 1){
 				printf("Invalid input. Please enter a number.\n");
 				while (getchar() != '\n');
 				continue;
 			}
+
+			if (studentID == 0){
+				printf("Payment status update cancelled.\n");
+				return;
+			}
+
 			break;
 		}
 	
@@ -523,8 +542,7 @@ void loadMaintenanceFromFile(void){
 		// baca issue description
 		fgets(maintenance[totalMaintenance].issueDescription,
 			sizeof(maintenance[totalMaintenance].issueDescription), fp);
-		maintenance[totalMaintenance].issueDescription[
-			strcspn(maintenance[totalMaintenance].issueDescription, "\n")] = '\0';
+		maintenance[totalMaintenance].issueDescription[strcspn(maintenance[totalMaintenance].issueDescription, "\n")] = '\0';
 
 		// baca severity dan status
 		if (fscanf(fp, "%19s %19s\n",
@@ -568,35 +586,95 @@ void updateMaintenanceStatus(void){
 	}
 
 	int roomNo;
-	int found = 0;
 
-	while (!found){
-		printf("Enter Room Number to update status: ");
+	while (1){
+		printf("Enter Room Number to update status (Enter 0 to cancel): ");
 		if (scanf("%d", &roomNo) != 1){
-			printf("Invalid input. Please enter  other number.\n");
+			printf("Invalid input. Please enter other number.\n");
 			while (getchar() != '\n');
 			continue;
 		}
 
+		if (roomNo == 0){
+			printf("Update maintenance status cancelled.\n");
+			return;
+		}
+
+		int indexes[MAX_MAINTENANCE];
+		int count = 0;
+
 		for (int i = 0; i < totalMaintenance; i++){
 			if (maintenance[i].roomNo == roomNo){
-				found = 1;
-				printf("Current Status: %s\n", maintenance[i].status);
-
-				if (strcmp(maintenance[i].status, "Completed") == 0){
-					printf("This maintenance request is already completed.\n");
-				}
-				else{
-					strcpy(maintenance[i].status, "Completed");
-					printf("Status updated to Completed successfully.\n");
-				}
-				break;
+				indexes[count++] = i;
 			}
 		}
 
-		if (!found)
-		{
-			printf("Room number not found in the maintenance records. Please try again.\n");
+		if (count == 0){
+			printf("No maintenance records found for Room %d.\n", roomNo);
+			continue;
+		}
+
+		printf("Maintenance Records for Room %d:\n", roomNo);
+		printf("-----------------------------------------------------------------------------------------\n");
+		for (int i = 0; i < count; i++){
+			int idx = indexes[i];
+			printf("%d. Issue: %-35s | Severity: %-10s | Status: %s\n",
+				i + 1,
+				maintenance[idx].issueDescription,
+				maintenance[idx].severity,
+				maintenance[idx].status);
+			}
+		printf("-----------------------------------------------------------------------------------------\n");
+		int choice;
+		while(1) {
+			printf("Select issue to update (1-%d) (Enter 0 to cancel): ", count);
+			if (scanf("%d", &choice) != 1){
+				printf("Invalid choice. Please try again.\n");
+				while (getchar() != '\n');
+				continue;
+			} 
+
+			if (choice == 0){
+				printf("Update cancelled. No changes made.\n");
+				return;
+			}
+
+			if (choice < 1 || choice > count){
+				printf("Choice out of range. Please try again.\n");
+				continue;
+			}
+			break;
+		}
+
+		int selectedIndex = indexes[choice -1];
+		char newStatus[20];
+
+		printf("Current Status: %s\n", maintenance[selectedIndex].status);
+		printf("Enter new status (Pending/In Progress/Completed) (Enter 0 to cancel): ");
+		while (getchar() != '\n');
+		fgets(newStatus, sizeof(newStatus), stdin);
+		newStatus[strcspn(newStatus, "\n")] = '\0';
+
+		if(strcmp(maintenance[selectedIndex].status, "Completed") == 0) {
+			printf("Maintenance issue for Room %d already Completed.\n", roomNo);
+			continue;
+		} else if (strcmp(newStatus, "0") == 0){
+			printf("Update cancelled. No changes made.\n");
+			break;
+		} else {
+			if (strcmp(newStatus, "Completed") == 0){
+				printf("Maintenance issue marked as Completed.\n");
+				strcpy(maintenance[selectedIndex].status, newStatus);
+			} else if (strcmp(newStatus, "In Progress") == 0){
+				printf("Maintenance issue marked as In Progress.\n");
+				strcpy(maintenance[selectedIndex].status, newStatus);
+			} else if (strcmp(newStatus, "Pending") == 0){
+				printf("Maintenance issue remains Pending.\n");
+				strcpy(maintenance[selectedIndex].status, newStatus);
+			} else {
+				printf("Invalid status entered. No changes made.\n");
+			}
+			break;
 		}
 	}
 }
