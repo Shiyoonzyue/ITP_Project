@@ -104,10 +104,10 @@ int main(void)
 		printf("6. Payment Status Update\n");
 		printf("7. Generate Report\n");
 		printf("8. Exit\n");
-		printf("Enter your choice: ");
+		printf("Enter your choice (1-8): ");
 		if (scanf("%d", &choice) != 1)
 		{
-			printf("Invalid input. Please enter a number.\n");
+			printf("Invalid input. Please enter a number between 1 to 8.\n");
 			while (getchar() != '\n')
 				;
 			continue;
@@ -147,7 +147,7 @@ int main(void)
 			loopStatus = 0;
 			break;
 		default:
-			printf("\nInvalid choice, try again");
+			printf("\nInvalid choice, please enter 1-8 to continue...\n");
 			break;
 		}
 	} while (loopStatus == 1);

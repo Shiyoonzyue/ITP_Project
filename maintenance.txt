@@ -10,3 +10,6 @@ High Completed
 102
 lampu rosak
 Medium In
+202
+kipas terbang
+High Completed
