@@ -1,146 +1,125 @@
 <mxfile host="65bd71144e">
     <diagram id="yCjuwd4Pa80KeNGYe1Ei" name="Page-1">
-        <mxGraphModel dx="1543" dy="469" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="4060" dy="1408" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="2" value="start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="330" y="80" width="60" height="40" as="geometry"/>
+                <mxCell id="2" value="start" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="390" width="60" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="3" value="load data from files" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="300" y="160" width="120" height="60" as="geometry"/>
+                <mxCell id="3" value="load data from files" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="470" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="display a welcoming&amp;nbsp;&lt;div&gt;message and dashboard&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-                    <mxGeometry x="270" y="260" width="180" height="60" as="geometry"/>
+                <mxCell id="5" value="display a welcoming&amp;nbsp;&lt;div&gt;message and dashboard&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="260" y="570" width="180" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" value="input choice from 1 to 8" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-                    <mxGeometry x="270" y="360" width="180" height="60" as="geometry"/>
+                <mxCell id="6" value="input choice from 1 to 8" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="260" y="670" width="180" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="7" value="input valid?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="290" y="460" width="140" height="140" as="geometry"/>
+                <mxCell id="7" value="input valid?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="770" width="140" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="1. Student list" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="8" value="1. Student list" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="-825" y="1020" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" value="2. Add student" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="9" value="2. Add student" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="-550" y="1020" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" value="3. View maintenance list" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="10" value="3. View maintenance list" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="-230" y="1020" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="11" value="4. Add maintenance request" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="11" value="4. Add maintenance request" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="150" y="1010" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="5. Update maintenance status" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="12" value="5. Update maintenance status" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="525" y="950" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="13" value="6. Payment status update" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="13" value="6. Payment status update" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="880" y="940" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="14" value="7. Generate report" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="14" value="7. Generate report" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1200" y="940" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="15" value="8. Exit" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="15" value="8. Exit" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1600" y="950" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="20" value="start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="1680" y="80" width="60" height="40" as="geometry"/>
-                </mxCell>
-                <mxCell id="21" value="load data from files" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="1650" y="160" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="22" value="display a welcoming&amp;nbsp;&lt;div&gt;message and dashboard&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-                    <mxGeometry x="1620" y="260" width="180" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="23" value="input choice from 1 to 8" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-                    <mxGeometry x="1620" y="360" width="180" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="24" value="input valid?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="1640" y="460" width="140" height="140" as="geometry"/>
-                </mxCell>
-                <mxCell id="25" value="run pro" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="1650" y="640" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="26" value="display student list&amp;nbsp;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="26" value="display student list&amp;nbsp;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="-840" y="1120" width="150" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="27" value="enter save student&#39;s:&lt;div&gt;name,&lt;/div&gt;&lt;div&gt;level.&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-                    <mxGeometry x="-580" y="1330" width="180" height="60" as="geometry"/>
+                <mxCell id="27" value="enter save student&#39;s:&lt;div&gt;name,&lt;/div&gt;&lt;div&gt;level.&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="-580" y="1140" width="180" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="29" value="save data to file&lt;div&gt;(student.txt)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="-550" y="1850" width="120" height="60" as="geometry"/>
+                <mxCell id="29" value="save data to file&lt;div&gt;(student.txt)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-550" y="1660" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="30" value="display maintenance&amp;nbsp;&lt;div&gt;list&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="30" value="display maintenance&amp;nbsp;&lt;div&gt;list&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="-250" y="1120" width="170" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="33" value="room available?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="-565" y="1550" width="150" height="140" as="geometry"/>
+                <mxCell id="33" value="room available?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-565" y="1360" width="150" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="35" value="enter room type (single/double/quad)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-                    <mxGeometry x="-590" y="1440" width="240" height="60" as="geometry"/>
+                <mxCell id="35" value="enter room type (single/double/quad)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="-590" y="1250" width="240" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="36" value="assign student&#39;s ID" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="-550" y="1740" width="120" height="60" as="geometry"/>
+                <mxCell id="36" value="assign student&#39;s ID" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-550" y="1550" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="37" value="enter student room number" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="37" value="enter student room number" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="100" y="1160" width="190" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="38" value="Room exist?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="38" value="Room exist?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="120" y="1270" width="150" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="39" value="enter room issue. severity (low/medium/high)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="39" value="enter room issue. severity (low/medium/high)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="100" y="1440" width="190" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="41" value="save data to maintenance.txt" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="41" value="save data to maintenance.txt" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="135" y="1550" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="42" value="display process&amp;nbsp;&lt;div&gt;succesfull message&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="42" value="display process&amp;nbsp;&lt;div&gt;succesfull message&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="105" y="1650" width="195" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="43" value="display process&amp;nbsp;&lt;div&gt;succesfull message&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-                    <mxGeometry x="-580" y="1950" width="195" height="60" as="geometry"/>
+                <mxCell id="43" value="display process&amp;nbsp;&lt;div&gt;succesfull message&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="-580" y="1760" width="195" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="44" value="enter student&#39;s room number" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="44" value="enter student&#39;s room number" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="485" y="1060" width="205" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="45" value="enter room issue" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="45" value="enter room issue" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="480" y="1170" width="190" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="46" value="inpur valid?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="46" value="inpur valid?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="510" y="1260" width="160" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="48" value="display current status&amp;nbsp;&lt;div&gt;and update new status&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="48" value="display current status&amp;nbsp;&lt;div&gt;and update new status&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="480" y="1430" width="190" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="49" value="update data to maintenance.txt" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="49" value="update data to maintenance.txt" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="515" y="1550" width="135" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="50" value="display process&amp;nbsp;&lt;div&gt;succesfull message&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="50" value="display process&amp;nbsp;&lt;div&gt;succesfull message&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="460" y="1650" width="195" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="51" value="enter student&#39;s ID" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="51" value="enter student&#39;s ID" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="845" y="1070" width="190" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="52" value="student&#39;s ID exist?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="52" value="student&#39;s ID exist?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="870" y="1190" width="150" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="53" value="display student&#39;s status and&amp;nbsp;&lt;div&gt;enter overdue in days&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="53" value="display student&#39;s status and&amp;nbsp;&lt;div&gt;enter overdue in days&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="850" y="1360" width="190" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="54" value="paid?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="54" value="paid?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="900" y="1500" width="130" height="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="56" value="display process&amp;nbsp;&lt;div&gt;succesfull message&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="56" value="display process&amp;nbsp;&lt;div&gt;succesfull message&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="860" y="1770" width="195" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="59" value="display process&amp;nbsp;&lt;div&gt;succesfull message&amp;nbsp;&lt;/div&gt;&lt;div&gt;and generate report.txt&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                <mxCell id="59" value="display process&amp;nbsp;&lt;div&gt;succesfull message&amp;nbsp;&lt;/div&gt;&lt;div&gt;and generate report.txt&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
                     <mxGeometry x="1178" y="1065" width="212" height="75" as="geometry"/>
                 </mxCell>
-                <mxCell id="61" value="update data in file&lt;div&gt;(student.txt)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="61" value="update data in file&lt;div&gt;(student.txt)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="890" y="1650" width="135" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="62" value="students &amp;gt;100?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="-565" y="1135" width="150" height="140" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
