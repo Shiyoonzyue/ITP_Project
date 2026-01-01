@@ -3,11 +3,10 @@ ROOM ALLOCATION SYSTEM REPORT
 
 1. TOTAL MONTHLY REVENUE
 ------------------------------------
-Total revenue: RM 1700.00
+Total revenue: RM 1950.00
 
 2. STUDENTS WITH UNPAID FEES
 ------------------------------------
-ID: 1006 | Name: y | Room: 201 | Fee: RM 250.00
 ID: 1007 | Name: Uwais | Room: 202 | Fee: RM 250.00
 
 3. ROOM WITH MOST MAINTENANCE ISSUES
