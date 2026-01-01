@@ -34,7 +34,7 @@ typedef struct
 {
 	int roomNo;
 	char issueDescription[100];
-	char status[20]; // Pending, In Progress, Completed
+	char status[20];   // Pending, In Progress, Completed
 	char severity[20]; // Low, Medium, High
 } MaintenanceRequest;
 
@@ -112,7 +112,7 @@ int main(void)
 				;
 			continue;
 		}
-// switch case for menu choice
+		// switch case for menu choice
 		switch (choice)
 		{
 		case 1:
@@ -835,12 +835,12 @@ void generateReport()
 			}
 		}
 
-		// body 1
+		// body 1 total monthly
 		fprintf(fp, "1. TOTAL MONTHLY REVENUE\n");
 		fprintf(fp, "------------------------------------\n");
 		fprintf(fp, "Total revenue: RM %.2f\n\n", totalRevenue); // display total revenue
 
-		// body 2
+		// body 2 students with unpaid
 		fprintf(fp, "2. STUDENTS WITH UNPAID FEES\n");
 		fprintf(fp, "------------------------------------\n");
 
@@ -868,7 +868,7 @@ void generateReport()
 		}
 		fprintf(fp, "\n");
 
-		// body 3
+		// body 3 room with most maintenance
 		fprintf(fp, "3. ROOM WITH MOST MAINTENANCE ISSUES\n");
 		fprintf(fp, "-----------------------------------\n");
 
@@ -894,7 +894,7 @@ void generateReport()
 			int maxIssues = 0; // store numer of issues
 			int maxRoomIndex = -1;
 
-			// maintenance chaeck
+			// maintenance check
 			for (int i = 0; i < 6; i++) // loop
 			{
 				if (roomIssueCount[i] > maxIssues)
