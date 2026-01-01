@@ -24,7 +24,7 @@ typedef struct
 	char name[50];
 	int level;
 	int roomNo;
-	double monthlyFees; // NEW
+	double monthlyFees; // student base fee
 	int paymentStatus;	// 0 = Unpaid, 1 = Paid
 	double feesPaid;
 } Student;
@@ -34,8 +34,8 @@ typedef struct
 {
 	int roomNo;
 	char issueDescription[100];
-	char status[20];
-	char severity[20];
+	char status[20]; // Pending, In Progress, Completed
+	char severity[20]; // Low, Medium, High
 } MaintenanceRequest;
 
 // Array to store all maintenance requests
@@ -112,7 +112,7 @@ int main(void)
 				;
 			continue;
 		}
-
+// switch case for menu choice
 		switch (choice)
 		{
 		case 1:
@@ -912,6 +912,6 @@ void generateReport()
 		}
 
 		fclose(fp); // close then a message
-		printf("Report generated succesfully✨\n");
+		printf("Report generated succesfully\n");
 	}
 }
