@@ -176,13 +176,13 @@ void addStudent(void)
 
 	if (strcmp(newStudent->name, "0") == 0)
 	{
-		printf("Student addition cancelled.\n");
+		printf("\nStudent addition cancelled.\n");
 		return;
 	}
 
 	while (1)
 	{
-		printf("Enter Student Level (1/2/3/4): ");
+		printf("\nEnter Student Level (1/2/3/4): ");
 		if (scanf("%d", &newStudent->level) != 1 || newStudent->level < 1 || newStudent->level > 4)
 		{
 			printf("Invalid input for student level.\n");
@@ -197,7 +197,7 @@ void addStudent(void)
 
 	newStudent->studentID = 1000 + totalStudents + 1;
 	totalStudents++;
-	printf("Student added successfully with ID: %d\n", newStudent->studentID);
+	printf("\nStudent added successfully with ID: %d\n", newStudent->studentID);
 }
 
 void studentList(void)
@@ -255,7 +255,7 @@ void addMaintenanceRequest(void)
 	// check for valid room only for available student
 	while (1)
 	{
-		printf("Enter Room Number (Enter 0 to cancel): ");
+		printf("\n\nEnter Room Number (Enter 0 to cancel): ");
 		if (scanf("%d", &m->roomNo) != 1)
 		{
 			printf("Invalid input. Please enter a number.\n");
@@ -315,7 +315,7 @@ void addMaintenanceRequest(void)
 
 	totalMaintenance++;
 
-	printf("Maintenance request added successfully.\n");
+	printf("\nMaintenance request added successfully.\n");
 }
 
 // Check if there are any maintenance requests
@@ -347,17 +347,19 @@ void assignRoom()
 {
 	int studentIndex = totalStudents;
 	int assigned = 0;
-	printf("Please assign a room to the student.\n");
+	printf("\nPlease assign a room to the student.\n");
 
 	// Display the available rooms based on type
 	while (!assigned)
 	{
 		char roomType[10];
-		printf("Enter Room Type (Single/Double/Quad): ");
+		printf("\nEnter Room Type (Single/Double/Quad): ");
 		scanf("%9s", roomType);
 
-		printf("Available Rooms of type %s:\n", roomType);
+		printf("\nAvailable Rooms of type %s:\n", roomType);
+		printf("-----------------------------------------\n");
 		int found = 0;
+
 		for (int i = 0; i < 6; i++)
 		{
 			if (strcmp(rooms[i].type, roomType) == 0 && rooms[i].currentOccupants < rooms[i].maxOccupants)
@@ -366,16 +368,16 @@ void assignRoom()
 				found = 1;
 			}
 		}
-
 		if (!found)
 		{
-			printf("No available rooms of type %s. Please choose another type.\n", roomType);
+			printf("\nNo available rooms of type %s. Please choose another type.\n", roomType);
+			printf("-----------------------------------------\n");
 			continue;
 		}
-
+		printf("-----------------------------------------\n");
 		// Prompt user to assign a room for student
 		int chosenRoomNo;
-		printf("Enter Room No to assign: ");
+		printf("\nEnter Room No to assign: ");
 		if (scanf("%d", &chosenRoomNo) != 1)
 		{
 			printf("Invalid input for room number.\n");
@@ -388,7 +390,7 @@ void assignRoom()
 		int roomIndex = findRoomIndex(chosenRoomNo);
 		if (roomIndex == -1 || strcmp(rooms[roomIndex].type, roomType) != 0 || rooms[roomIndex].currentOccupants >= rooms[roomIndex].maxOccupants)
 		{
-			printf("Room %d is not valid or full. Please try again.\n", chosenRoomNo);
+			printf("\nRoom %d is not valid or full. Please try again.\n", chosenRoomNo);
 			continue;
 		}
 
@@ -422,7 +424,7 @@ void paymentStatusUpdate(void)
 	{
 		while (1)
 		{
-			printf("Enter Student ID to update payment status (Enter 0 to cancel): ");
+			printf("\nEnter Student ID to update payment status (Enter 0 to cancel): ");
 			if (scanf("%d", &studentID) != 1)
 			{
 				printf("Invalid input. Please enter a number.\n");
@@ -448,12 +450,12 @@ void paymentStatusUpdate(void)
 				found = 1;
 				if (students[i].paymentStatus == 1)
 				{
-					printf("Student %s has already paid their fees.\n", students[i].name);
+					printf("\nStudent %s has already paid their fees.\n", students[i].name);
 				}
 				else
 				{
 					int daysOverdue;
-					printf("Current payment status: Unpaid\n");
+					printf("\nCurrent payment status: Unpaid\n");
 					printf("Student name: %s\n", students[i].name);
 					printf("Room No: %d\n", students[i].roomNo);
 					printf("Room Type: ");
@@ -468,7 +470,7 @@ void paymentStatusUpdate(void)
 					}
 					while (1)
 					{
-						printf("Enter payment overdue in days: ");
+						printf("\nEnter payment overdue in days: ");
 						if (scanf("%d", &daysOverdue) != 1 || daysOverdue < 0)
 						{
 							printf("Invalid input for days overdue.\n");
@@ -478,7 +480,7 @@ void paymentStatusUpdate(void)
 						}
 						break;
 					}
-					printf("Original Monthly Fees: RM %.2f\n", students[i].monthlyFees);
+					printf("\nOriginal Monthly Fees: RM %.2f\n", students[i].monthlyFees);
 					printf("Days Overdue: %d days\n", daysOverdue);
 					printf("Penalty Applied: RM %.2f\n\n", calculatePenalty(students[i].monthlyFees, daysOverdue));
 					printf("Total Amount: RM %.2f\n", students[i].monthlyFees + calculatePenalty(students[i].monthlyFees, daysOverdue));
@@ -573,15 +575,16 @@ void loadMaintenanceFromFile(void)
 			break;
 
 		// baca issue description
-		fgets(maintenance[totalMaintenance].issueDescription,
-			  sizeof(maintenance[totalMaintenance].issueDescription), fp);
+		fgets(maintenance[totalMaintenance].issueDescription,sizeof(maintenance[totalMaintenance].issueDescription), fp);
 		maintenance[totalMaintenance].issueDescription[strcspn(maintenance[totalMaintenance].issueDescription, "\n")] = '\0';
 
-		// baca severity dan status
-		if (fscanf(fp, "%19s %19s\n",
-				   maintenance[totalMaintenance].severity,
-				   maintenance[totalMaintenance].status) != 2)
-			break;
+		// baca severity
+		fgets(maintenance[totalMaintenance].severity, sizeof(maintenance[totalMaintenance].severity), fp);
+		maintenance[totalMaintenance].severity[strcspn(maintenance[totalMaintenance].severity, "\n")] = '\0';
+
+		//baca status
+		fgets(maintenance[totalMaintenance].status, sizeof(maintenance[totalMaintenance].status), fp);
+		maintenance[totalMaintenance].status[strcspn(maintenance[totalMaintenance].status, "\n")] = '\0';
 
 		totalMaintenance++;
 	}
@@ -603,7 +606,7 @@ void saveMaintenanceToFile(void)
 	for (int i = 0; i < totalMaintenance; i++)
 	{
 
-		fprintf(fp, "%d\n%s\n%s %s\n",
+		fprintf(fp, "%d\n%s\n%s\n%s\n",
 				maintenance[i].roomNo,
 				maintenance[i].issueDescription,
 				maintenance[i].severity,
@@ -653,7 +656,7 @@ void updateMaintenanceStatus(void)
 
 		if (count == 0)
 		{
-			printf("No maintenance records found for Room %d.\n", roomNo);
+			printf("\nNo maintenance records found for Room %d.\n", roomNo);
 			continue;
 		}
 
@@ -672,7 +675,7 @@ void updateMaintenanceStatus(void)
 		int choice;
 		while (1)
 		{
-			printf("Select issue to update (1-%d) (Enter 0 to cancel): ", count);
+			printf("\nSelect issue to update (1-%d) (Enter 0 to cancel): ", count);
 			if (scanf("%d", &choice) != 1)
 			{
 				printf("Invalid choice. Please try again.\n");
@@ -912,6 +915,6 @@ void generateReport()
 		}
 
 		fclose(fp); // close then a message
-		printf("Report generated succesfully\n");
+		printf("\nReport generated succesfully\n");
 	}
 }

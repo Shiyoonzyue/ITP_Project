@@ -1,15 +1,16 @@
 301
 Kipas Meletup Dan Tebakar
-High Completed
+High
+Completed
 301
 Kepala Kipas Tercabut
-Low Completed
+Low
+Completed
 102
 Langsir terbakar
-High Completed
+High
+Completed
 102
 lampu rosak
-Medium In
-301
-pintu meletup
-Medium Pending
+Medium
+In Progress
