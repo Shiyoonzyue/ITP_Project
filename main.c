@@ -45,6 +45,8 @@ Student students[MAX_STUDENTS];
 MaintenanceRequest maintenance[MAX_MAINTENANCE];
 int totalMaintenance = 0;
 
+
+// Predefined rooms in the system
 Room rooms[6] =
 	{
 		{101, "Single", 1, 0},
@@ -79,6 +81,7 @@ void saveStudentsToFile(void);
 
 int main(void)
 {
+	// Load existing data from files
 	loadStudentsFromFile();
 	printf("Loaded %d students from file.\n", totalStudents);
 	loadMaintenanceFromFile();
@@ -90,7 +93,7 @@ int main(void)
 	printf("\n\n\n---------------------------------\n");
 	printf("Welcome to Room Allocation System");
 	printf("\n---------------------------------\n");
-
+// main menu loop
 	do
 	{
 		int choice;
@@ -159,6 +162,7 @@ int main(void)
 
 void addStudent(void)
 {
+	// Check if maximum students reached
 	if (totalStudents >= MAX_STUDENTS)
 	{
 		printf("Cannot add more students. Maximum limit reached.\n");
@@ -174,12 +178,14 @@ void addStudent(void)
 	fgets(newStudent->name, sizeof(newStudent->name), stdin);
 	newStudent->name[strcspn(newStudent->name, "\n")] = '\0';
 
+	// Check for cancellation
 	if (strcmp(newStudent->name, "0") == 0)
 	{
 		printf("\nStudent addition cancelled.\n");
 		return;
 	}
 
+	// Input and validate student level
 	while (1)
 	{
 		printf("\nEnter Student Level (1/2/3/4): ");
@@ -193,8 +199,10 @@ void addStudent(void)
 		break;
 	}
 
+	// Assign room to student
 	assignRoom();
 
+	// Assign unique student ID
 	newStudent->studentID = 1000 + totalStudents + 1;
 	totalStudents++;
 	printf("\nStudent added successfully with ID: %d\n", newStudent->studentID);
@@ -211,6 +219,7 @@ void studentList(void)
 	printf("\n%-6s %-20s %-8s %-10s %-10s %-10s %-14s %-14s\n", "ID", "Name", "Level", "Room No", "Type", "Fees", "Status", "Fees Paid (including penalty)");
 	printf("-----------------------------------------------------------------------------------------------------------------------\n");
 
+	// Loop through all students and display their details
 	for (int i = 0; i < totalStudents; i++)
 	{
 		int roomIndex = findRoomIndex(students[i].roomNo);
@@ -272,6 +281,7 @@ void addMaintenanceRequest(void)
 
 		roomIndex = findRoomIndex(m->roomNo);
 
+		// validate room number
 		if (roomIndex == -1)
 		{
 			printf("Room number does not exist. Try again.\n");
@@ -333,6 +343,7 @@ void viewMaintenanceList(void) // list dalam table student maintenance list
 	printf("%-8s %-30s %-10s %-12s\n", "RoomNo", "Issue", "Severity", "Status");
 	printf("---------------------------------------------------------\n");
 
+	// Loop through all maintenance requests and display their details
 	for (int i = 0; i < totalMaintenance; i++)
 	{
 		printf("%-8d %-30s %-10s %-12s\n",
@@ -345,6 +356,7 @@ void viewMaintenanceList(void) // list dalam table student maintenance list
 
 void assignRoom()
 {
+	// Function to assign room to a student
 	int studentIndex = totalStudents;
 	int assigned = 0;
 	printf("\nPlease assign a room to the student.\n");
@@ -360,6 +372,7 @@ void assignRoom()
 		printf("-----------------------------------------\n");
 		int found = 0;
 
+		// List available rooms of the selected type
 		for (int i = 0; i < 6; i++)
 		{
 			if (strcmp(rooms[i].type, roomType) == 0 && rooms[i].currentOccupants < rooms[i].maxOccupants)
@@ -396,6 +409,8 @@ void assignRoom()
 
 		assigned = 1;
 
+		// Assign room to student
+		// Set monthly fees based on room type
 		if (strcmp(roomType, "Single") == 0)
 		{
 			students[studentIndex].monthlyFees = 350.0;
@@ -408,6 +423,8 @@ void assignRoom()
 		{
 			students[studentIndex].monthlyFees = 150.0;
 		}
+
+		// Update student details
 		students[studentIndex].paymentStatus = 0; // Unpaid by default
 		students[studentIndex].feesPaid = 0.0;
 		students[studentIndex].roomNo = chosenRoomNo;
@@ -420,6 +437,7 @@ void paymentStatusUpdate(void)
 {
 	// Function to update payment status of a student
 	int studentID;
+	// Infinite loop until valid student ID is entered or cancelled
 	while (1)
 	{
 		while (1)
@@ -443,10 +461,13 @@ void paymentStatusUpdate(void)
 		}
 
 		int found = 0; // Search for the student by ID
+
+		// Loop through all students to find the matching ID
 		for (int i = 0; i < totalStudents; i++)
 		{
 			if (students[i].studentID == studentID)
 			{
+				
 				found = 1;
 				if (students[i].paymentStatus == 1)
 				{
@@ -525,8 +546,10 @@ void paymentStatusUpdate(void)
 }
 /* Small Operational Functions */
 
+// calculate penalty based on days overdue
 double calculatePenalty(double baseFee, int daysOverdue)
 {
+	// Penalty calculation based on days overdue
 	if (daysOverdue > 7 && daysOverdue <= 30)
 	{
 		return baseFee * 0.05; // 5% penalty
@@ -541,6 +564,7 @@ double calculatePenalty(double baseFee, int daysOverdue)
 	}
 }
 
+// find room index based on room number
 int findRoomIndex(int roomNo)
 {
 	for (int i = 0; i < 6; i++)
@@ -553,11 +577,14 @@ int findRoomIndex(int roomNo)
 	return -1;
 }
 
+// check room availability
 int isRoomAvailable(Room *r)
 {
 	return r->currentOccupants < r->maxOccupants;
 }
 
+// ------------------------------FILE HANDLING SECTION---------------------------
+// file function definition (load file)
 void loadMaintenanceFromFile(void)
 {
 
@@ -567,6 +594,7 @@ void loadMaintenanceFromFile(void)
 
 	totalMaintenance = 0;
 
+	// loop until maximum maintenance reached
 	while (totalMaintenance < MAX_MAINTENANCE)
 	{
 
@@ -603,6 +631,7 @@ void saveMaintenanceToFile(void)
 		return;
 	}
 
+	// loop to save all maintenance request
 	for (int i = 0; i < totalMaintenance; i++)
 	{
 
@@ -616,6 +645,7 @@ void saveMaintenanceToFile(void)
 	fclose(fp);
 }
 
+// function to update maintenance status
 void updateMaintenanceStatus(void)
 {
 	if (totalMaintenance == 0)
@@ -626,6 +656,7 @@ void updateMaintenanceStatus(void)
 
 	int roomNo;
 
+	// Infinite loop until valid room number is entered or cancelled
 	while (1)
 	{
 		printf("Enter Room Number to update status (Enter 0 to cancel): ");
@@ -646,6 +677,7 @@ void updateMaintenanceStatus(void)
 		int indexes[MAX_MAINTENANCE];
 		int count = 0;
 
+		// Find all maintenance requests for the given room number
 		for (int i = 0; i < totalMaintenance; i++)
 		{
 			if (maintenance[i].roomNo == roomNo)
@@ -660,27 +692,28 @@ void updateMaintenanceStatus(void)
 			continue;
 		}
 
+		// Display maintenance requests for the room
 		printf("Maintenance Records for Room %d:\n", roomNo);
 		printf("-----------------------------------------------------------------------------------------\n");
 		for (int i = 0; i < count; i++)
 		{
 			int idx = indexes[i];
 			printf("%d. Issue: %-35s | Severity: %-10s | Status: %s\n",
-				   i + 1,
-				   maintenance[idx].issueDescription,
-				   maintenance[idx].severity,
-				   maintenance[idx].status);
+					i + 1,
+					maintenance[idx].issueDescription,
+					maintenance[idx].severity,
+					maintenance[idx].status);
 		}
 		printf("-----------------------------------------------------------------------------------------\n");
 		int choice;
+		// Prompt user to select which maintenance request to update
 		while (1)
 		{
 			printf("\nSelect issue to update (1-%d) (Enter 0 to cancel): ", count);
 			if (scanf("%d", &choice) != 1)
 			{
 				printf("Invalid choice. Please try again.\n");
-				while (getchar() != '\n')
-					;
+				while (getchar() != '\n');
 				continue;
 			}
 
@@ -700,7 +733,7 @@ void updateMaintenanceStatus(void)
 
 		int selectedIndex = indexes[choice - 1];
 		char newStatus[20];
-
+		// Prompt user to enter new status
 		printf("Current Status: %s\n", maintenance[selectedIndex].status);
 		printf("Enter new status (Pending/In Progress/Completed) (Enter 0 to cancel): ");
 		while (getchar() != '\n')
@@ -708,6 +741,7 @@ void updateMaintenanceStatus(void)
 		fgets(newStatus, sizeof(newStatus), stdin);
 		newStatus[strcspn(newStatus, "\n")] = '\0';
 
+		// Update status based on user input
 		if (strcmp(maintenance[selectedIndex].status, "Completed") == 0)
 		{
 			printf("Maintenance issue for Room %d already Completed.\n", roomNo);
